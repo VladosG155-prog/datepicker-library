@@ -1,9 +1,11 @@
-import { ComponentType } from 'react'
+import { ComponentType, useState } from 'react'
 import { ICalendarProps } from '@components/Calendar'
 
-export const withMondayFirst = <P extends ICalendarProps>(
+export const withTodos = <P extends ICalendarProps>(
     Component: ComponentType<Omit<P, keyof ICalendarProps>>
 ) => {
+    const [isShowModal, setIsShowModal] = useState(false)
+
     return (props: P) => {
         return <Component {...props} isMondayFirst={true} />
     }

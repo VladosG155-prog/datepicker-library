@@ -19,6 +19,8 @@ export default {
                     disabled: '#AAAAAA',
                 },
                 blue: {
+                    50: '#2f80ed4d',
+                    100: '#2f80ed99',
                     300: '#2F80ED',
                 },
             },

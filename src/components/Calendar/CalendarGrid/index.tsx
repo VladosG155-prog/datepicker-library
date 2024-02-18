@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { DayCell } from '../../../components/DayCell'
 import { transformDateToInput } from '../../../utils/transformDate'
+import { compareDate } from '@utils/compareDate'
 
 interface ICalendarGridProps {
     days: { day: number; month: number; year: number }[]
@@ -8,8 +9,10 @@ interface ICalendarGridProps {
     onSelectDay: (val: string) => void
     activeDate: string
     currentMonth?: number
+    isRange?: boolean
     dayNames: string[]
-    viewType: 'month' | 'week' | 'year'
+    changeWithRange: any
+    rangeValues: { from: string; to: string }
 }
 
 export const CalendarGrid: FC<ICalendarGridProps> = ({
@@ -19,12 +22,44 @@ export const CalendarGrid: FC<ICalendarGridProps> = ({
     currentMonth,
     activeDate,
     dayNames,
-    viewType,
+    isRange,
+    changeWithRange,
+    rangeValues,
 }) => {
-    console.log(currentMonth)
+    const handleCellClick = (day: number, month: number, year: number) => {
+        if (isRange) {
+            changeWithRange(transformDateToInput(day, month, year))
+        } else {
+            onSelectDay(transformDateToInput(day, month, year))
+        }
+    }
+
+    const isActiveRangeDay = (day: number, month: number, year: number) => {
+        return {
+            from: compareDate(
+                rangeValues.from,
+                transformDateToInput(day, month, year)
+            ),
+            to: compareDate(
+                rangeValues.to,
+                transformDateToInput(day, month, year)
+            ),
+            mid:
+                compareDate(
+                    transformDateToInput(day, month, year),
+                    rangeValues.from,
+                    '>'
+                ) &&
+                compareDate(
+                    transformDateToInput(day, month, year),
+                    rangeValues.to,
+                    '<'
+                ),
+        }
+    }
 
     return (
-        <div className="grid grid-cols-7 gap-2">
+        <div className="grid grid-cols-7">
             {dayNames.map((day) => (
                 <div
                     key={day}
@@ -37,15 +72,17 @@ export const CalendarGrid: FC<ICalendarGridProps> = ({
             {days.map(({ day, month, year }) => (
                 <DayCell
                     day={day}
+                    isRange={isRange}
                     key={`${day}-${month}-${year}`}
                     isPrevMonth={currentMonth ? month === currentMonth : true}
                     isHoliday={isHoliday && isHoliday(day, month)}
                     onClick={() => {
-                        onSelectDay(transformDateToInput(day, month, year))
+                        handleCellClick(day, month, year)
                     }}
                     isActiveDay={
                         activeDate === transformDateToInput(day, month, year)
                     }
+                    isActiveRangeDay={isActiveRangeDay(day, month, year)}
                 />
             ))}
         </div>

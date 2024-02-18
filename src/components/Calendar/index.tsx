@@ -1,16 +1,17 @@
 import { ReactComponent as ArrowLeft } from '@assets/Next.svg'
 import { ReactComponent as ArrowRight } from '@assets/Prev.svg'
-import { FC } from 'react'
+import { ComponentType, FC, useState } from 'react'
 import { monthNames } from '@constants/month'
 import { withLogic } from '../../decorator/withLogic'
 import { daysPosition } from './config'
 import { CalendarGrid } from './CalendarGrid'
 
-export interface IDatePickerProps {
+export interface ICalendarProps {
     isHoliday?: (day: number, month?: number) => boolean
     onSelectDay: (val: string) => void
     activeDate: string
     isMondayFirst: boolean
+    isRange: boolean
     viewType?: 'month' | 'week' | 'year'
     days: { day: number; month: number; year: number }[]
     currentDate: Date
@@ -19,7 +20,7 @@ export interface IDatePickerProps {
     handleClickPrev: () => void
     currentFullDate: string
 }
-const Calendar: FC<IDatePickerProps> = ({
+const Calendar: FC<ICalendarProps> = ({
     isHoliday,
     onSelectDay,
     activeDate,
@@ -30,10 +31,23 @@ const Calendar: FC<IDatePickerProps> = ({
     currentMonth,
     handleClickPrev,
     currentFullDate,
+    isRange,
 }) => {
     const dayNames = isMondayFirst ? daysPosition.fromMon : daysPosition.fromSun
 
-    console.log('curr', currentMonth)
+    const [date, setDate] = useState({ from: '', to: '' })
+
+    const changeWithRange = (val: string) => {
+        if (date.from.length && !date.to.length) {
+            setDate({ ...date, to: val })
+        } else if (date.from.length && date.to.length) {
+            setDate({ from: val, to: '' })
+        } else {
+            setDate({ ...date, from: val })
+        }
+    }
+
+    console.log(days)
 
     return (
         <div className="mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
@@ -58,11 +72,14 @@ const Calendar: FC<IDatePickerProps> = ({
                     <CalendarGrid
                         dayNames={dayNames}
                         days={days}
+                        rangeValues={date}
                         isHoliday={isHoliday}
                         currentMonth={currentMonth}
                         activeDate={activeDate}
                         viewType={viewType}
                         onSelectDay={onSelectDay}
+                        changeWithRange={changeWithRange}
+                        isRange={isRange}
                     />
                 </div>
             )}
@@ -75,7 +92,11 @@ const Calendar: FC<IDatePickerProps> = ({
                                 dayNames={dayNames}
                                 activeDate={activeDate}
                                 isHoliday={isHoliday}
+                                isRange={isRange}
+                                rangeValues={date}
                                 viewType={viewType}
+                                currentMonth={index}
+                                changeWithRange={changeWithRange}
                                 onSelectDay={onSelectDay}
                                 days={days[index]}
                             />

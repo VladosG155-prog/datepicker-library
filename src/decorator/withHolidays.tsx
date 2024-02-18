@@ -1,4 +1,5 @@
-import { IDatePickerProps } from '@components/Calendar'
+import { ICalendarProps } from '@components/Calendar'
+import { ComponentType, FC } from 'react'
 const holidays = [
     { month: 0, day: 1 },
     { month: 0, day: 7 },
@@ -10,13 +11,9 @@ const holidays = [
     { month: 11, day: 25 },
 ]
 
-interface IWithHolidayDisplay {
-    isHoliday: (day: number, month?: number) => boolean
-}
-
-const withHolidayDisplay = <P extends IDatePickerProps>(
-    Component: React.ComponentType<Omit<P, keyof IDatePickerProps>>
-): React.FC<P> => {
+const withHolidayDisplay = <P extends ICalendarProps>(
+    Component: ComponentType<Omit<P, keyof ICalendarProps>>
+): FC<P> => {
     return (props: P) => {
         const isHoliday = (day: number, month?: number): boolean => {
             return holidays.some(

@@ -4,7 +4,7 @@ import { monthNames } from '../constants/month'
 
 const nowDate = new Date(Date.now())
 
-import { IDatePickerProps } from '../components/Calendar'
+import { ICalendarProps } from '../components/Calendar'
 
 interface IWithViewTypeProps {
     days: { day: number; month: number; year: number }[]
@@ -13,14 +13,13 @@ interface IWithViewTypeProps {
     currentFullDate: string
 }
 
-export const withViewType = <P extends IDatePickerProps>(
-    Component: ComponentType<Omit<P, keyof IDatePickerProps>>
+export const withViewType = <P extends ICalendarProps>(
+    Component: ComponentType<Omit<P, keyof ICalendarProps>>
 ) => {
-    return (props: IDatePickerProps & P) => {
+    return (props: ICalendarProps & P) => {
         const { activeDate, viewType, isMondayFirst } = props
 
         const [_, selectedMonth, selectedYear] = activeDate
-            ?.replace('0', '')
             .split('/')
             .map(Number)
 
@@ -38,7 +37,6 @@ export const withViewType = <P extends IDatePickerProps>(
                 nextDate.setFullYear(nextDate.getFullYear() + 1)
             } else if (viewType === 'week') {
                 nextDate.setDate(nextDate.getDate() + 7)
-                console.log(nextDate.getDate())
             } else {
                 nextDate.setMonth(nextDate.getMonth() + 1)
             }
@@ -63,19 +61,22 @@ export const withViewType = <P extends IDatePickerProps>(
                 generateCalendarDays(
                     currentYear,
                     currentMonth,
+                    currentDate.getDate(),
                     viewType,
                     isMondayFirst
                 ),
-            [currentYear, currentMonth, viewType, isMondayFirst]
+            [viewType, isMondayFirst, currentDate]
         )
+
         let currentFullDate = ''
-        console.log(days)
 
         if (viewType === 'year') {
             currentFullDate = `${currentYear}`
         } else {
             currentFullDate = `${monthNames[currentMonth]} ${currentYear}`
         }
+
+        console.log(days)
 
         return (
             <Component
