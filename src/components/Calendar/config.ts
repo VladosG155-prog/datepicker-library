@@ -5,3 +5,5 @@ export const daysPosition = {
     fromSun: startFromSunday,
     fromMon: startFromMonday,
 }
+
+export const MONTH_COUNT = 12

@@ -1,15 +1,16 @@
+import { VIEW_TYPE } from '@constants/enums'
 import { generateYearsDays } from './generateYearsDays'
 
 export const generateCalendarDays = (
     year: number,
     month: number,
     startDay: number,
-    viewType: 'month' | 'year' | 'week' = 'month',
+    viewType: VIEW_TYPE = VIEW_TYPE.MONTH,
     isMondayFirst = false
 ) => {
     const days = []
 
-    if (viewType === 'month') {
+    if (viewType === VIEW_TYPE.MONTH) {
         const daysInMonth = new Date(year, month + 1, 0).getDate()
         const firstDayOfWeek = new Date(year, month, 1).getDay()
         const changePosition = isMondayFirst
@@ -36,7 +37,7 @@ export const generateCalendarDays = (
         for (let i = 1; i <= nextMonthDays; i++) {
             days.push({ day: i, month: month + 1, year })
         }
-    } else if (viewType === 'week') {
+    } else if (viewType === VIEW_TYPE.WEEK) {
         const startDate = new Date(year, month, startDay)
 
         if (isMondayFirst) {
@@ -53,8 +54,8 @@ export const generateCalendarDays = (
             })
             startDate.setDate(startDate.getDate() + 1)
         }
-    } else if (viewType === 'year') {
-        return generateYearsDays(year)
+    } else if (viewType === VIEW_TYPE.YEAR) {
+        return generateYearsDays(year, isMondayFirst)
     }
 
     return days

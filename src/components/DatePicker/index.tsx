@@ -1,23 +1,15 @@
 import { FC, useState } from 'react'
 import Calendar from '@components/Calendar'
 import { Input } from '@components/Input'
-
-interface IDatePickerProps {
-    withHolidays?: boolean
-    withMondayFirst?: boolean
-    withRange?: boolean
-    withTodos?: boolean
-    viewType?: 'month' | 'week' | 'year'
-    maxDate?: Date
-    minDate?: Date
-}
+import { IDatePickerProps } from './interfaces'
+import { VIEW_TYPE } from '@constants/enums'
 
 const DatePicker: FC<IDatePickerProps> = ({
     withHolidays = false,
     withMondayFirst = false,
     withRange = false,
     withTodos = false,
-    viewType = 'month',
+    viewType = VIEW_TYPE.MONTH,
     maxDate,
     minDate,
 }) => {
@@ -37,15 +29,19 @@ const DatePicker: FC<IDatePickerProps> = ({
 
     const handleSelectDate = (val: string) => {
         if (withRange) {
-            const [from, to] = val.split(' ')
-            setRange({ from: from, to: to })
+            const [from, to] = val.split('-')
+            setRange({ from, to: to })
         } else {
             setDate(val)
         }
     }
+    console.log(range)
+
+    const rangeDateToString =
+        range.from || range.to ? `${range.from}-${range.to}` : ''
 
     return (
-        <div className="">
+        <div>
             {withRange && (
                 <Input
                     onClick={handleClickInput}
@@ -66,7 +62,7 @@ const DatePicker: FC<IDatePickerProps> = ({
                     withTodos={withTodos}
                     maxDate={maxDate}
                     minDate={minDate}
-                    activeDate={date} // withRange ? range.from + ' ' + range.to : date
+                    activeDate={withRange ? rangeDateToString : date}
                     viewType={viewType}
                     onSelectDay={handleSelectDate}
                 />

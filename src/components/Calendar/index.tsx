@@ -1,10 +1,11 @@
-import { FC, memo, useState } from 'react'
+import { FC, memo } from 'react'
 import { monthNames } from '@constants/month'
 import { withLogic } from '../../decorator/withLogic'
-import { daysPosition } from './config'
+import { MONTH_COUNT, daysPosition } from './config'
 import { CalendarGrid } from './CalendarGrid'
 import { ICalendarProps } from './interfaces'
 import { CalendarHeader } from './CalendarHeader'
+import { VIEW_TYPE } from '@constants/enums'
 
 const Calendar: FC<ICalendarProps> = memo((props) => {
     const {
@@ -12,7 +13,7 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
         onSelectDay,
         activeDate,
         isMondayFirst,
-        viewType = 'month',
+        viewType = VIEW_TYPE.MONTH,
         days,
         handleClickNext,
         currentMonth,
@@ -23,27 +24,24 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
         activeTodoDays,
         maxDate,
         minDate,
+        changeWithRange,
+        rangeDate,
     } = props
 
     const dayNames = isMondayFirst ? daysPosition.fromMon : daysPosition.fromSun
 
-    const [rangeDate, setRangeDate] = useState({
-        from: '',
-        to: '',
-    })
-
-    const changeWithRange = (val: string) => {
-        setRangeDate((prevRangeDate) => {
-            if (prevRangeDate.from.length > 0) {
-                if (val >= prevRangeDate.from) {
-                    return { ...prevRangeDate, to: val }
-                } else {
-                    return { from: val, to: prevRangeDate.from }
-                }
-            } else {
-                return { from: val, to: '' }
-            }
-        })
+    const gridProps = {
+        dayNames: dayNames,
+        maxDate: maxDate || null,
+        minDate: minDate || null,
+        rangeValues: rangeDate,
+        isHoliday: isHoliday,
+        activeDate: activeDate,
+        toggleTodoModal: toggleTodoModal,
+        onSelectDay: onSelectDay,
+        changeWithRange: changeWithRange,
+        isRange: isRange,
+        activeTodoDays: activeTodoDays ?? [],
     }
 
     return (
@@ -53,49 +51,29 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
                 handleClickNext={handleClickNext}
                 currentFullDate={currentFullDate}
             />
-            {viewType !== 'year' && (
+            {viewType !== VIEW_TYPE.YEAR && (
                 <div className="p-2 grid grid-cols-1 gap-4">
                     <CalendarGrid
-                        dayNames={dayNames}
                         days={days}
-                        maxDate={maxDate || null}
-                        minDate={minDate || null}
-                        rangeValues={rangeDate}
-                        isHoliday={isHoliday}
                         currentMonth={currentMonth}
-                        activeDate={activeDate}
-                        viewType={viewType}
-                        toggleTodoModal={toggleTodoModal}
-                        onSelectDay={onSelectDay}
-                        changeWithRange={changeWithRange}
-                        isRange={isRange}
-                        activeTodoDays={activeTodoDays}
+                        {...gridProps}
                     />
                 </div>
             )}
-            {viewType === 'year' && (
+            {viewType === VIEW_TYPE.YEAR && (
                 <div className="p-2 grid grid-cols-4 gap-4">
-                    {new Array(12).fill(9).map((elem, index) => (
-                        <div>
-                            <h1>{monthNames[index]}</h1>
-                            <CalendarGrid
-                                dayNames={dayNames}
-                                activeDate={activeDate}
-                                isHoliday={isHoliday}
-                                isRange={isRange}
-                                maxDate={maxDate}
-                                minDate={minDate}
-                                rangeValues={rangeDate}
-                                toggleTodoModal={toggleTodoModal}
-                                viewType={viewType}
-                                currentMonth={index}
-                                changeWithRange={changeWithRange}
-                                onSelectDay={onSelectDay}
-                                days={days[index]}
-                                activeTodoDays={activeTodoDays}
-                            />
-                        </div>
-                    ))}
+                    {new Array(MONTH_COUNT).fill(9).map((elem, monthIndex) => {
+                        return (
+                            <div>
+                                <h1>{monthNames[monthIndex]}</h1>
+                                <CalendarGrid
+                                    currentMonth={monthIndex}
+                                    days={days[monthIndex]}
+                                    {...gridProps}
+                                />
+                            </div>
+                        )
+                    })}
                 </div>
             )}
         </div>

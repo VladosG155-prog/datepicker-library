@@ -1,7 +1,7 @@
-export const generateYearsDays = (year: number) => {
-    const calendar = {} as {
-        [key: number]: { day: number; month: number; year: number }[]
-    }
+import { IDay } from '@components/Calendar/interfaces'
+
+export const generateYearsDays = (year: number, isMondayFirst: boolean) => {
+    const calendar: { [key: string]: IDay[] } = {}
 
     for (let month = 0; month < 12; month++) {
         const monthDays = []
@@ -9,7 +9,8 @@ export const generateYearsDays = (year: number) => {
         const daysInMonth = new Date(year, month + 1, 0).getDate()
 
         const firstDay = new Date(year, month, 1).getDay()
-        const prevMonthDays = firstDay === 0 ? 6 : firstDay - 1
+        const prevMonthDays =
+            firstDay === 0 ? 6 : isMondayFirst ? firstDay - 1 : firstDay
         const prevMonthLastDay = new Date(year, month, 0).getDate()
         for (
             let i = prevMonthLastDay - prevMonthDays + 1;

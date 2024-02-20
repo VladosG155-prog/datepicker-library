@@ -1,11 +1,19 @@
+import { VIEW_TYPE } from '@constants/enums'
+
+export interface IDay {
+    day: number
+    month: number
+    year: number
+}
+
 export interface ICalendarProps {
     isHoliday?: (day: number, month?: number) => boolean
     onSelectDay: (val: string) => void
     activeDate: string
     isMondayFirst: boolean
     isRange: boolean
-    viewType?: 'month' | 'week' | 'year'
-    days: { day: number; month: number; year: number }[]
+    viewType?: VIEW_TYPE
+    days: IDay[] | { [key: number]: IDay[] }
     currentDate: Date
     currentMonth: number
     handleClickNext: () => void
@@ -15,4 +23,6 @@ export interface ICalendarProps {
     activeTodoDays?: string[]
     maxDate?: Date
     minDate?: Date
+    rangeDate?: { from: string; to: string }
+    changeWithRange: (val: string) => void
 }

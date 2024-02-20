@@ -5,6 +5,7 @@ import { monthNames } from '../constants/month'
 const nowDate = new Date(Date.now())
 
 import { ICalendarProps } from '@components/Calendar/interfaces'
+import { VIEW_TYPE } from '@constants/enums'
 
 interface IWithViewTypeProps {
     days: { day: number; month: number; year: number }[]
@@ -19,8 +20,11 @@ export const withViewType = <P extends ICalendarProps>(
     return (props: ICalendarProps & P) => {
         const { activeDate, viewType, isMondayFirst } = props
 
-        const [_, selectedMonth, selectedYear] = activeDate
-            .split(' ')[0]
+        const rangeDate = activeDate.split('-')[1]
+            ? activeDate.split('-')[1]
+            : activeDate.split('-')[0]
+
+        const [_, selectedMonth, selectedYear] = rangeDate
             .split('/')
             .map(Number)
 
@@ -32,29 +36,27 @@ export const withViewType = <P extends ICalendarProps>(
 
         const currentMonth = currentDate.getMonth()
 
-        const handleClickNext = (): void => {
+        const handleClickControl = (increment: number): void => {
             const nextDate = new Date(currentDate.getTime())
-            if (viewType === 'year') {
-                nextDate.setFullYear(nextDate.getFullYear() + 1)
-            } else if (viewType === 'week') {
-                nextDate.setDate(nextDate.getDate() + 7)
-            } else {
-                nextDate.setMonth(nextDate.getMonth() + 1)
+            switch (viewType) {
+                case VIEW_TYPE.YEAR:
+                    nextDate.setFullYear(nextDate.getFullYear() + increment)
+                    break
+                case VIEW_TYPE.WEEK:
+                    nextDate.setDate(nextDate.getDate() + increment * 7)
+                    break
+                default:
+                    nextDate.setMonth(nextDate.getMonth() + increment)
+                    break
             }
             setCurrentDate(nextDate)
         }
 
         const handleClickPrev = (): void => {
-            const nextDate = new Date(currentDate.getTime())
-            if (viewType === 'year') {
-                nextDate.setFullYear(nextDate.getFullYear() - 1)
-            } else if (viewType === 'week') {
-                nextDate.setDate(nextDate.getDate() - 7)
-            } else {
-                nextDate.setMonth(nextDate.getMonth() - 1)
-            }
-
-            setCurrentDate(nextDate)
+            handleClickControl(-1)
+        }
+        const handleClickNext = (): void => {
+            handleClickControl(1)
         }
 
         const days = useMemo(
@@ -71,7 +73,7 @@ export const withViewType = <P extends ICalendarProps>(
 
         let currentFullDate = ''
 
-        if (viewType === 'year') {
+        if (viewType === VIEW_TYPE.YEAR) {
             currentFullDate = `${currentYear}`
         } else {
             currentFullDate = `${monthNames[currentMonth]} ${currentYear}`

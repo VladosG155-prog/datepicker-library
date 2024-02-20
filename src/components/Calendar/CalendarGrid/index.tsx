@@ -43,10 +43,10 @@ export const CalendarGrid: FC<ICalendarGridProps> = (props) => {
             {days.map(({ day, month, year }) => {
                 const stringDate = transformDateToInput(day, month, year)
                 const isActiveDayRange = isActiveRangeDay(
-                    rangeValues,
                     day,
                     month,
-                    year
+                    year,
+                    rangeValues
                 )
 
                 const disabledByMaxMinValues = isDisabledByMaxMinDate(
@@ -67,7 +67,7 @@ export const CalendarGrid: FC<ICalendarGridProps> = (props) => {
                         isHoliday={isHoliday && isHoliday(day, month)}
                         onClick={() => {
                             handleCellClick(day, month, year)
-                            toggleTodoModal(stringDate)
+                            toggleTodoModal && toggleTodoModal(stringDate)
                         }}
                         isActiveDay={activeDate === stringDate}
                         isActiveRangeDay={isActiveDayRange}
