@@ -7,9 +7,7 @@ type TodosObject = {
     [key: string]: ITodo[]
 }
 
-export const withTodos = <P extends ICalendarProps>(
-    Component: ComponentType<Omit<P, keyof ICalendarProps>>
-) => {
+export const withTodos = <P extends Object>(Component: ComponentType<P>) => {
     const [isShowModal, setIsShowModal] = useState(false)
     const [todos, setTodos] = useState<TodosObject>(
         JSON.parse(localStorage.getItem('todos') || '{}')

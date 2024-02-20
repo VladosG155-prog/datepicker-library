@@ -60,7 +60,6 @@ export const CalendarGrid: FC<ICalendarGridProps> = (props) => {
                 return (
                     <DayCell
                         day={day}
-                        isRange={isRange}
                         key={`${day}-${month}-${year}`}
                         isPrevMonth={month === currentMonth}
                         isDisabledByMaxMin={disabledByMaxMinValues}

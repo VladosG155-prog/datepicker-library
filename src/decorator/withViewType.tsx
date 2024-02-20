@@ -6,6 +6,7 @@ const nowDate = new Date(Date.now())
 
 import { ICalendarProps } from '@components/Calendar/interfaces'
 import { VIEW_TYPE } from '@constants/enums'
+import { isValidDate } from '@utils/isValidDate'
 
 interface IWithViewTypeProps {
     days: { day: number; month: number; year: number }[]
@@ -14,9 +15,7 @@ interface IWithViewTypeProps {
     currentFullDate: string
 }
 
-export const withViewType = <P extends ICalendarProps>(
-    Component: ComponentType<Omit<P, keyof ICalendarProps>>
-) => {
+export const withViewType = <P extends Object>(Component: ComponentType<P>) => {
     return (props: ICalendarProps & P) => {
         const { activeDate, viewType, isMondayFirst } = props
 
@@ -30,7 +29,7 @@ export const withViewType = <P extends ICalendarProps>(
 
         const selectedDate = new Date(selectedYear, selectedMonth - 1)
         const [currentDate, setCurrentDate] = useState(
-            activeDate ? selectedDate : nowDate
+            isValidDate(activeDate) ? selectedDate : nowDate
         )
         const currentYear = currentDate.getFullYear()
 

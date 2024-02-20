@@ -1,5 +1,5 @@
-import { ICalendarProps } from '@components/Calendar/interfaces'
 import { ComponentType, FC } from 'react'
+
 const holidays = [
     { month: 0, day: 1 },
     { month: 0, day: 7 },
@@ -11,8 +11,8 @@ const holidays = [
     { month: 11, day: 25 },
 ]
 
-const withHolidayDisplay = <P extends ICalendarProps>(
-    Component: ComponentType<Omit<P, keyof ICalendarProps>>
+export const withHolidays = <P extends Object>(
+    Component: ComponentType<P>
 ): FC<P> => {
     return (props: P) => {
         const isHoliday = (day: number, month?: number): boolean => {
@@ -23,5 +23,3 @@ const withHolidayDisplay = <P extends ICalendarProps>(
         return <Component {...props} isHoliday={isHoliday} />
     }
 }
-
-export default withHolidayDisplay

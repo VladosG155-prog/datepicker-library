@@ -10,8 +10,8 @@ export interface ICalendarProps {
     isHoliday?: (day: number, month?: number) => boolean
     onSelectDay: (val: string) => void
     activeDate: string
-    isMondayFirst: boolean
-    isRange: boolean
+    isMondayFirst?: boolean
+    isRange?: boolean
     viewType?: VIEW_TYPE
     days: IDay[] | { [key: number]: IDay[] }
     currentDate: Date

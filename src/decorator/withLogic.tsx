@@ -1,26 +1,28 @@
-import { ComponentType } from 'react'
+import { FC } from 'react'
 import { CalendarService } from './calendarService'
-import withHolidayDisplay from './withHolidays'
+import { withHolidays } from './withHolidays'
 import { ICalendarProps } from '@components/Calendar/interfaces'
 import { withMondayFirst } from './withMondayFirst'
 import { withViewType } from './withViewType'
 import { withRange } from './withRange'
 import { withTodos } from './withTodos'
 
-interface ILogicProps {
+export interface ILogicProps {
     withHolidays: boolean
     withMondayFirst: boolean
     withRange: boolean
+    withTodos: boolean
 }
 
 export const withLogic = <P extends ICalendarProps>(
-    Component: ComponentType<Omit<P, keyof ICalendarProps>>
+    Component: FC<ICalendarProps>
 ) => {
-    return (props) => {
-        const calendarService = new CalendarService(Component as ComponentType)
+    return (props: P & ILogicProps) => {
+        const calendarService = new CalendarService(Component)
         calendarService.add(withViewType)
+
         if (props.withHolidays) {
-            calendarService.add(withHolidayDisplay)
+            calendarService.add(withHolidays)
         }
 
         if (props.withMondayFirst) {

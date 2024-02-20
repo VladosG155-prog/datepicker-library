@@ -1,17 +1,6 @@
 import { FC } from 'react'
 import cn from 'classnames'
-
-interface IDayCellProps {
-    day: number
-    isHoliday?: boolean
-    isPrevMonth: boolean
-    onClick: () => void
-    isActiveDay: boolean
-    isRange?: boolean
-    isActiveRangeDay: { from: boolean; to: boolean; mid: boolean }
-    isActiveTodoDay?: boolean
-    isDisabledByMaxMin: boolean
-}
+import { IDayCellProps } from './interfaces'
 
 export const DayCell: FC<IDayCellProps> = ({
     day,
@@ -19,7 +8,6 @@ export const DayCell: FC<IDayCellProps> = ({
     isPrevMonth,
     onClick,
     isActiveDay = false,
-    isRange = false,
     isActiveRangeDay,
     isActiveTodoDay,
     isDisabledByMaxMin,

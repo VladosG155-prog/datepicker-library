@@ -1,13 +1,14 @@
-import { ComponentType } from 'react'
+import { ICalendarProps } from '@components/Calendar/interfaces'
+import { ComponentType, FC } from 'react'
 
 export class CalendarService {
-    Calendar: ComponentType<any>
+    Calendar: FC<ICalendarProps>
 
-    constructor(Calendar: ComponentType) {
+    constructor(Calendar: FC<ICalendarProps>) {
         this.Calendar = Calendar
     }
 
-    add(decorator: (Calendar: ComponentType) => ComponentType) {
+    add(decorator: (Calendar: FC<ICalendarProps>) => FC<ICalendarProps>) {
         this.Calendar = decorator(this.Calendar)
     }
 }

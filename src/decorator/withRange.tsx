@@ -1,10 +1,8 @@
 import { ICalendarProps } from '@components/Calendar/interfaces'
 import { ComponentType, useEffect, useState } from 'react'
 
-export const withRange = <P extends ICalendarProps>(
-    Component: ComponentType<Omit<P, keyof ICalendarProps>>
-) => {
-    return (props: P) => {
+export const withRange = <P extends Object>(Component: ComponentType<P>) => {
+    return (props: P & ICalendarProps) => {
         const { activeDate, onSelectDay } = props
 
         const [from, to] = activeDate.split('-')

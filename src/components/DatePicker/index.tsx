@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 import Calendar from '@components/Calendar'
 import { Input } from '@components/Input'
 import { IDatePickerProps } from './interfaces'
@@ -23,9 +23,9 @@ const DatePicker: FC<IDatePickerProps> = ({
         setIsOpenCalendar(true)
     }
 
-    const handleChangeInput = (val: string) => {
+    const handleChangeInput = useCallback((val: string) => {
         setDate(val)
-    }
+    }, [])
 
     const handleSelectDate = (val: string) => {
         if (withRange) {
@@ -35,7 +35,6 @@ const DatePicker: FC<IDatePickerProps> = ({
             setDate(val)
         }
     }
-    console.log(range)
 
     const rangeDateToString =
         range.from || range.to ? `${range.from}-${range.to}` : ''
@@ -47,12 +46,16 @@ const DatePicker: FC<IDatePickerProps> = ({
                     onClick={handleClickInput}
                     onChange={handleChangeInput}
                     value={range.from}
+                    maxValue={maxDate}
+                    minValue={minDate}
                 />
             )}
             <Input
                 onClick={handleClickInput}
                 onChange={handleChangeInput}
                 value={withRange ? range.to : date}
+                maxValue={maxDate}
+                minValue={minDate}
             />
             {isOpenCalendar && (
                 <Calendar

@@ -44,6 +44,8 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
         activeTodoDays: activeTodoDays ?? [],
     }
 
+    console.warn('rerender')
+
     return (
         <div className="mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
             <CalendarHeader
