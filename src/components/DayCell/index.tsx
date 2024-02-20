@@ -9,6 +9,8 @@ interface IDayCellProps {
     isActiveDay: boolean
     isRange?: boolean
     isActiveRangeDay: { from: boolean; to: boolean; mid: boolean }
+    isActiveTodoDay?: boolean
+    isDisabledByMaxMin: boolean
 }
 
 export const DayCell: FC<IDayCellProps> = ({
@@ -19,15 +21,18 @@ export const DayCell: FC<IDayCellProps> = ({
     isActiveDay = false,
     isRange = false,
     isActiveRangeDay,
+    isActiveTodoDay,
+    isDisabledByMaxMin,
 }) => {
     return (
-        <div
+        <button
+            disabled={!isPrevMonth || isDisabledByMaxMin}
             onClick={onClick}
             className={cn(
-                'w-8 h-8 flex justify-center p-5 text-sm items-center font-semibold rounded-lg text-center text-gray-default  ',
+                'w-8 h-8 flex relative justify-center p-5 text-sm items-center font-semibold rounded-lg text-center text-gray-default  ',
                 {
                     'text-red-400': isHoliday,
-                    'text-gray-disabled': !isPrevMonth,
+                    'text-gray-disabled': !isPrevMonth || isDisabledByMaxMin,
                     'bg-blue-300 text-white': isActiveDay,
                     'cursor-pointer hover:bg-gray-200': isPrevMonth,
                     'bg-blue-100 text-white rounded-l-lg rounded-r-none':
@@ -40,6 +45,11 @@ export const DayCell: FC<IDayCellProps> = ({
             )}
         >
             {day}
-        </div>
+            {isActiveTodoDay && (
+                <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2">
+                    <div className="w-1 h-1 bg-blue-500 rounded-full"></div>
+                </div>
+            )}
+        </button>
     )
 }

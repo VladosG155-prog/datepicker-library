@@ -11,6 +11,7 @@ interface IInputProps {
 export const Input: FC<IInputProps> = ({ value = '', onChange, onClick }) => {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const inputDate = e.target.value
+
         const formattedDate = inputDate
             .replace(/\D/g, '')
             .replace(/^(\d{2})/, '$1/')
@@ -19,12 +20,8 @@ export const Input: FC<IInputProps> = ({ value = '', onChange, onClick }) => {
         onChange(formattedDate)
     }
 
-    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Backspace') {
-            e.preventDefault()
-            const newDate = (value as string).slice(0, -1)
-            onChange(newDate)
-        }
+    const handleClearInput = () => {
+        onChange('')
     }
 
     return (
@@ -38,13 +35,15 @@ export const Input: FC<IInputProps> = ({ value = '', onChange, onClick }) => {
             <input
                 type="text"
                 value={value}
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
+                onChange={(e) => handleChange(e)}
                 placeholder="Choose Date"
                 className="border-gray-100 w-full border-2 rounded-lg py-2.5 pl-9 pr-3.5 font-normal text-gray-default"
             />
             {value.length > 0 && (
-                <i className="absolute top-4 right-4">
+                <i
+                    onClick={handleClearInput}
+                    className="absolute top-4 right-4 cursor-pointer"
+                >
                     <CloseIcon />
                 </i>
             )}

@@ -1,4 +1,4 @@
-import { ICalendarProps } from '@components/Calendar'
+import { ICalendarProps } from '@components/Calendar/interfaces'
 import { ComponentType, FC } from 'react'
 const holidays = [
     { month: 0, day: 1 },

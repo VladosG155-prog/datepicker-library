@@ -27,3 +27,11 @@ export const WithHolidays: Story = {
 export const WithMondayFirst: Story = {
     render: () => <DatePicker withMondayFirst />,
 }
+
+export const WithRange: Story = {
+    render: () => <DatePicker withRange />,
+}
+
+export const WithTodos: Story = {
+    render: () => <DatePicker withTodos />,
+}

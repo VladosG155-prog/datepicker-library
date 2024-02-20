@@ -6,44 +6,69 @@ interface IDatePickerProps {
     withHolidays?: boolean
     withMondayFirst?: boolean
     withRange?: boolean
+    withTodos?: boolean
     viewType?: 'month' | 'week' | 'year'
+    maxDate?: Date
+    minDate?: Date
 }
 
 const DatePicker: FC<IDatePickerProps> = ({
     withHolidays = false,
     withMondayFirst = false,
     withRange = false,
+    withTodos = false,
     viewType = 'month',
+    maxDate,
+    minDate,
 }) => {
     const [date, setDate] = useState('')
 
-    const [isOpenCalendar, setIsOpenCalendar] = useState(false)
+    const [range, setRange] = useState({ from: '', to: '' })
 
-    const [range, setRange] = useState({ from: 0, to: 0 })
+    const [isOpenCalendar, setIsOpenCalendar] = useState(false)
 
     const handleClickInput = () => {
         setIsOpenCalendar(true)
     }
 
-    const handleChangeInput = (val: string) => () => {
+    const handleChangeInput = (val: string) => {
         setDate(val)
+    }
+
+    const handleSelectDate = (val: string) => {
+        if (withRange) {
+            const [from, to] = val.split(' ')
+            setRange({ from: from, to: to })
+        } else {
+            setDate(val)
+        }
     }
 
     return (
         <div className="">
+            {withRange && (
+                <Input
+                    onClick={handleClickInput}
+                    onChange={handleChangeInput}
+                    value={range.from}
+                />
+            )}
             <Input
                 onClick={handleClickInput}
-                onChange={(val) => handleChangeInput(val)}
-                value={date.toString()}
+                onChange={handleChangeInput}
+                value={withRange ? range.to : date}
             />
             {isOpenCalendar && (
                 <Calendar
                     withHolidays={withHolidays}
                     withMondayFirst={withMondayFirst}
                     withRange={withRange}
-                    activeDate={date}
+                    withTodos={withTodos}
+                    maxDate={maxDate}
+                    minDate={minDate}
+                    activeDate={date} // withRange ? range.from + ' ' + range.to : date
                     viewType={viewType}
-                    onSelectDay={(val: string) => setDate(val)}
+                    onSelectDay={handleSelectDate}
                 />
             )}
         </div>

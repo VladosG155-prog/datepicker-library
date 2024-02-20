@@ -4,7 +4,7 @@ import { monthNames } from '../constants/month'
 
 const nowDate = new Date(Date.now())
 
-import { ICalendarProps } from '../components/Calendar'
+import { ICalendarProps } from '@components/Calendar/interfaces'
 
 interface IWithViewTypeProps {
     days: { day: number; month: number; year: number }[]
@@ -20,6 +20,7 @@ export const withViewType = <P extends ICalendarProps>(
         const { activeDate, viewType, isMondayFirst } = props
 
         const [_, selectedMonth, selectedYear] = activeDate
+            .split(' ')[0]
             .split('/')
             .map(Number)
 
@@ -75,8 +76,6 @@ export const withViewType = <P extends ICalendarProps>(
         } else {
             currentFullDate = `${monthNames[currentMonth]} ${currentYear}`
         }
-
-        console.log(days)
 
         return (
             <Component

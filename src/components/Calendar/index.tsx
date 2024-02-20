@@ -1,85 +1,75 @@
-import { ReactComponent as ArrowLeft } from '@assets/Next.svg'
-import { ReactComponent as ArrowRight } from '@assets/Prev.svg'
-import { ComponentType, FC, useState } from 'react'
+import { FC, memo, useState } from 'react'
 import { monthNames } from '@constants/month'
 import { withLogic } from '../../decorator/withLogic'
 import { daysPosition } from './config'
 import { CalendarGrid } from './CalendarGrid'
+import { ICalendarProps } from './interfaces'
+import { CalendarHeader } from './CalendarHeader'
 
-export interface ICalendarProps {
-    isHoliday?: (day: number, month?: number) => boolean
-    onSelectDay: (val: string) => void
-    activeDate: string
-    isMondayFirst: boolean
-    isRange: boolean
-    viewType?: 'month' | 'week' | 'year'
-    days: { day: number; month: number; year: number }[]
-    currentDate: Date
-    currentMonth: number
-    handleClickNext: () => void
-    handleClickPrev: () => void
-    currentFullDate: string
-}
-const Calendar: FC<ICalendarProps> = ({
-    isHoliday,
-    onSelectDay,
-    activeDate,
-    isMondayFirst,
-    viewType = 'month',
-    days,
-    handleClickNext,
-    currentMonth,
-    handleClickPrev,
-    currentFullDate,
-    isRange,
-}) => {
+const Calendar: FC<ICalendarProps> = memo((props) => {
+    const {
+        isHoliday,
+        onSelectDay,
+        activeDate,
+        isMondayFirst,
+        viewType = 'month',
+        days,
+        handleClickNext,
+        currentMonth,
+        handleClickPrev,
+        currentFullDate,
+        isRange,
+        toggleTodoModal,
+        activeTodoDays,
+        maxDate,
+        minDate,
+    } = props
+
     const dayNames = isMondayFirst ? daysPosition.fromMon : daysPosition.fromSun
 
-    const [date, setDate] = useState({ from: '', to: '' })
+    const [rangeDate, setRangeDate] = useState({
+        from: '',
+        to: '',
+    })
 
     const changeWithRange = (val: string) => {
-        if (date.from.length && !date.to.length) {
-            setDate({ ...date, to: val })
-        } else if (date.from.length && date.to.length) {
-            setDate({ from: val, to: '' })
-        } else {
-            setDate({ ...date, from: val })
-        }
+        setRangeDate((prevRangeDate) => {
+            if (prevRangeDate.from.length > 0) {
+                if (val >= prevRangeDate.from) {
+                    return { ...prevRangeDate, to: val }
+                } else {
+                    return { from: val, to: prevRangeDate.from }
+                }
+            } else {
+                return { from: val, to: '' }
+            }
+        })
     }
-
-    console.log(days)
 
     return (
         <div className="mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-            <div className="flex justify-between items-center px-6 py-3">
-                <button
-                    onClick={handleClickPrev}
-                    className="text-white focus:outline-none"
-                >
-                    <ArrowRight />
-                </button>
-                <div className="text-black font-bold">{currentFullDate}</div>
-                <button
-                    onClick={handleClickNext}
-                    className="text-white focus:outline-none"
-                >
-                    <ArrowLeft />
-                </button>
-            </div>
-
+            <CalendarHeader
+                handleClickPrev={handleClickPrev}
+                handleClickNext={handleClickNext}
+                currentFullDate={currentFullDate}
+            />
             {viewType !== 'year' && (
                 <div className="p-2 grid grid-cols-1 gap-4">
                     <CalendarGrid
                         dayNames={dayNames}
                         days={days}
-                        rangeValues={date}
+                        maxDate={maxDate || null}
+                        minDate={minDate || null}
+                        rangeValues={rangeDate}
                         isHoliday={isHoliday}
                         currentMonth={currentMonth}
                         activeDate={activeDate}
                         viewType={viewType}
+                        toggleTodoModal={toggleTodoModal}
                         onSelectDay={onSelectDay}
                         changeWithRange={changeWithRange}
                         isRange={isRange}
+                        activeTodoDays={activeTodoDays}
                     />
                 </div>
             )}
@@ -93,12 +83,16 @@ const Calendar: FC<ICalendarProps> = ({
                                 activeDate={activeDate}
                                 isHoliday={isHoliday}
                                 isRange={isRange}
-                                rangeValues={date}
+                                maxDate={maxDate}
+                                minDate={minDate}
+                                rangeValues={rangeDate}
+                                toggleTodoModal={toggleTodoModal}
                                 viewType={viewType}
                                 currentMonth={index}
                                 changeWithRange={changeWithRange}
                                 onSelectDay={onSelectDay}
                                 days={days[index]}
+                                activeTodoDays={activeTodoDays}
                             />
                         </div>
                     ))}
@@ -106,7 +100,7 @@ const Calendar: FC<ICalendarProps> = ({
             )}
         </div>
     )
-}
+})
 
 const CalendarWithLogic = withLogic(Calendar)
 
