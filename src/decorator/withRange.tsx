@@ -26,9 +26,11 @@ export const withRange = <P extends Object>(Component: ComponentType<P>) => {
                 if (!prevRangeDate.from) {
                     return { from: val, to: '' }
                 }
-                return {
-                    from: val >= prevRangeDate.from ? prevRangeDate.from : val,
-                    to: val >= prevRangeDate.from ? val : prevRangeDate.from,
+
+                if (val >= prevRangeDate.from) {
+                    return { from: prevRangeDate.from, to: val }
+                } else {
+                    return { from: val, to: prevRangeDate.from }
                 }
             })
         }

@@ -47,7 +47,15 @@ export const withTodos = <P extends Object>(Component: ComponentType<P>) => {
 
         setTodos({ ...todos, [currentDate]: newTodos })
     }
-    const activeTodoDays = Object.keys(todos)
+
+    const todokeys = Object.keys(todos)
+    let activeTodoDays: string[] = []
+    for (let key in todos) {
+        if (todos[key].length) {
+            activeTodoDays.push(key)
+        }
+    }
+
     return (props: P) => {
         return (
             <>

@@ -24,7 +24,25 @@ const DatePicker: FC<IDatePickerProps> = ({
     }
 
     const handleChangeInput = useCallback((val: string) => {
-        setDate(val)
+        if (withRange) {
+            setRange((prev) => {
+                return {
+                    ...prev,
+                    to: val,
+                }
+            })
+        } else {
+            setDate(val)
+        }
+    }, [])
+
+    const handleChangeSecondInput = useCallback((val: string) => {
+        setRange((prev) => {
+            return {
+                ...prev,
+                from: val,
+            }
+        })
     }, [])
 
     const handleSelectDate = (val: string) => {
@@ -44,7 +62,7 @@ const DatePicker: FC<IDatePickerProps> = ({
             {withRange && (
                 <Input
                     onClick={handleClickInput}
-                    onChange={handleChangeInput}
+                    onChange={handleChangeSecondInput}
                     value={range.from}
                     maxValue={maxDate}
                     minValue={minDate}

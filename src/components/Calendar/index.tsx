@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import { monthNames } from '@constants/month'
 import { withLogic } from '../../decorator/withLogic'
-import { MONTH_COUNT, daysPosition } from './config'
+import { MONTH_COUNT, DAYS_POSITION } from './config'
 import { CalendarGrid } from './CalendarGrid'
 import { ICalendarProps } from './interfaces'
 import { CalendarHeader } from './CalendarHeader'
@@ -28,7 +28,9 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
         rangeDate,
     } = props
 
-    const dayNames = isMondayFirst ? daysPosition.fromMon : daysPosition.fromSun
+    const dayNames = isMondayFirst
+        ? DAYS_POSITION.fromMon
+        : DAYS_POSITION.fromSun
 
     const gridProps = {
         dayNames: dayNames,
@@ -43,9 +45,6 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
         isRange: isRange,
         activeTodoDays: activeTodoDays ?? [],
     }
-
-    console.warn('rerender')
-
     return (
         <div className="mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
             <CalendarHeader
@@ -63,7 +62,7 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
                 </div>
             )}
             {viewType === VIEW_TYPE.YEAR && (
-                <div className="p-2 grid grid-cols-4 gap-4">
+                <div className="p-2 grid grid-cols-3 gap-4">
                     {new Array(MONTH_COUNT).fill(9).map((elem, monthIndex) => {
                         return (
                             <div>

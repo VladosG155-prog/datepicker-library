@@ -29,8 +29,9 @@ export const withViewType = <P extends Object>(Component: ComponentType<P>) => {
 
         const selectedDate = new Date(selectedYear, selectedMonth - 1)
         const [currentDate, setCurrentDate] = useState(
-            isValidDate(activeDate) ? selectedDate : nowDate
+            isValidDate(rangeDate) ? selectedDate : nowDate
         )
+
         const currentYear = currentDate.getFullYear()
 
         const currentMonth = currentDate.getMonth()

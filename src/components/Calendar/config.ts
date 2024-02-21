@@ -1,7 +1,7 @@
 const startFromSunday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const startFromMonday = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
-export const daysPosition = {
+export const DAYS_POSITION = {
     fromSun: startFromSunday,
     fromMon: startFromMonday,
 }
