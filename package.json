@@ -1,16 +1,21 @@
 {
     "author": "Vlad Kolos (vladosk2004@gmail.com)",
-    "private": "false",
     "name": "@vladosg155/datepicker-library",
+    "main": "dist/index.js",
+    "module": "dist/index.es.js",
     "keywords": [
         "Datepicker, React-Datepicker",
         "Calendar",
         "Range date-picker"
     ],
+    "types": "dist/lib/index.d.ts",
     "files": [
         "dist"
     ],
-    "repository": "https://github.com/VladosG155-prog/datepicker-library",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/VladosG155-prog/datepicker-library.git"
+    },
     "devDependencies": {
         "@babel/core": "^7.23.9",
         "@babel/preset-env": "^7.23.9",
@@ -74,6 +79,7 @@
     "scripts": {
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
+        "build:lib": "rollup -c",
         "test:unit": "jest ",
         "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
         "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
@@ -84,5 +90,6 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "uuid": "^9.0.1"
-    }
+    },
+    "version": "0.0.3"
 }

@@ -17,10 +17,17 @@ const projectRootDir = path.resolve(__dirname)
 
 export default {
     input: 'src/index.ts',
-    output: {
-        file: 'dist/bundle.js',
-        format: 'cjs',
-    },
+    output: [
+        {
+            file: 'dist/index.js',
+            format: 'cjs',
+        },
+        {
+            file: 'dist/index.es.js',
+            format: 'es',
+            exports: 'named',
+        },
+    ],
     plugins: [
         resolve(),
         commonjs(),
