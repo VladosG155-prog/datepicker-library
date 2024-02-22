@@ -3,6 +3,7 @@ import { ICalendarProps } from '@components/Calendar/interfaces'
 import { Modal } from '@components/Modal'
 import { ITodo } from './interfaces'
 import { v4 as uuidv4 } from 'uuid'
+import { useClickOutside } from '../hooks/useClickOutside'
 type TodosObject = {
     [key: string]: ITodo[]
 }
@@ -48,7 +49,6 @@ export const withTodos = <P extends Object>(Component: ComponentType<P>) => {
         setTodos({ ...todos, [currentDate]: newTodos })
     }
 
-    const todokeys = Object.keys(todos)
     let activeTodoDays: string[] = []
     for (let key in todos) {
         if (todos[key].length) {
@@ -56,10 +56,13 @@ export const withTodos = <P extends Object>(Component: ComponentType<P>) => {
         }
     }
 
+    
+
     return (props: P) => {
         return (
             <>
                 <Modal
+                    
                     isOpen={isShowModal}
                     onSubmit={addTodo}
                     onClose={handleCloseModal}

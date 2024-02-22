@@ -1,6 +1,7 @@
-import { FC, FormEvent, useState } from 'react'
+import { FC, FormEvent, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { IModalProps } from './Modal.interfaces'
+import { useClickOutside } from '../../hooks/useClickOutside'
 
 export const Modal: FC<IModalProps> = ({
     isOpen,
@@ -10,18 +11,21 @@ export const Modal: FC<IModalProps> = ({
     onRemove,
 }) => {
     const [todoText, setTodoText] = useState('')
-
+    const ref = useRef(null)
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault()
         onSubmit(todoText)
         setTodoText('')
         onClose()
-    }
+    }   
+
+
+    useClickOutside(ref, onClose)
 
     if (!isOpen) return null
 
     return createPortal(
-        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+        <div ref={ref} className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
             <form
                 onSubmit={handleSubmit}
                 className="bg-white p-8 rounded shadow-lg relative"

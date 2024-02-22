@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useRef } from 'react'
 import { CalendarService } from './calendarService'
 import { withHolidays } from './withHolidays'
 import { ICalendarProps } from '@components/Calendar/interfaces'
@@ -25,6 +25,7 @@ export const withLogic = <P extends ICalendarProps>(
 ) => {
     return (props: ILogicProps) => {
         const calendarService = new CalendarService(Component)
+        const ref = useRef()
         calendarService.add(withViewType)
 
         if (props.withHolidays) {
@@ -46,6 +47,6 @@ export const withLogic = <P extends ICalendarProps>(
         const Calendar = calendarService.Calendar
 
         Calendar.displayName = `withLogic${Component.displayName}`
-        return <Calendar {...(props as P)} />
+        return <Calendar ref={ref} {...(props as P)} />
     }
 }
