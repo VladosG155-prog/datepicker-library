@@ -1,91 +1,85 @@
-import { ReactComponent as ArrowLeft } from '@assets/Next.svg'
-import { ReactComponent as ArrowRight } from '@assets/Prev.svg'
-import { FC } from 'react'
+import { FC, memo } from 'react'
 import { monthNames } from '@constants/month'
-import { withLogic } from '../../decorator/withLogic'
-import { daysPosition } from './config'
+import { withLogic } from '../../decorators/withLogic'
+import { MONTH_COUNT, DAYS_POSITION } from './config'
 import { CalendarGrid } from './CalendarGrid'
+import { ICalendarProps } from './interfaces'
+import { CalendarHeader } from './CalendarHeader'
+import { VIEW_TYPE } from '@constants/enums'
 
-export interface IDatePickerProps {
-    isHoliday?: (day: number, month?: number) => boolean
-    onSelectDay: (val: string) => void
-    activeDate: string
-    isMondayFirst: boolean
-    viewType?: 'month' | 'week' | 'year'
-    days: { day: number; month: number; year: number }[]
-    currentDate: Date
-    currentMonth: number
-    handleClickNext: () => void
-    handleClickPrev: () => void
-    currentFullDate: string
-}
-const Calendar: FC<IDatePickerProps> = ({
-    isHoliday,
-    onSelectDay,
-    activeDate,
-    isMondayFirst,
-    viewType = 'month',
-    days,
-    handleClickNext,
-    currentMonth,
-    handleClickPrev,
-    currentFullDate,
-}) => {
-    const dayNames = isMondayFirst ? daysPosition.fromMon : daysPosition.fromSun
+const Calendar: FC<ICalendarProps> = memo((props) => {
+    const {
+        isHoliday,
+        onSelectDay,
+        activeDate,
+        isMondayFirst,
+        viewType = VIEW_TYPE.MONTH,
+        days,
+        handleClickNext,
+        currentMonth,
+        handleClickPrev,
+        currentFullDate,
+        isRange,
+        toggleTodoModal,
+        activeTodoDays,
+        maxDate,
+        minDate,
+        changeWithRange,
+        rangeDate,
+    } = props
 
-    console.log('curr', currentMonth)
+    const dayNames = isMondayFirst
+        ? DAYS_POSITION.fromMon
+        : DAYS_POSITION.fromSun
 
+    const gridProps = {
+        dayNames: dayNames,
+        maxDate: maxDate || null,
+        minDate: minDate || null,
+        rangeValues: rangeDate,
+        isHoliday: isHoliday,
+        activeDate: activeDate,
+        toggleTodoModal: toggleTodoModal,
+        onSelectDay: onSelectDay,
+        changeWithRange: changeWithRange,
+        isRange: isRange,
+        activeTodoDays: activeTodoDays ?? [],
+    }
     return (
         <div className="mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-            <div className="flex justify-between items-center px-6 py-3">
-                <button
-                    onClick={handleClickPrev}
-                    className="text-white focus:outline-none"
-                >
-                    <ArrowRight />
-                </button>
-                <div className="text-black font-bold">{currentFullDate}</div>
-                <button
-                    onClick={handleClickNext}
-                    className="text-white focus:outline-none"
-                >
-                    <ArrowLeft />
-                </button>
-            </div>
-
-            {viewType !== 'year' && (
+            <CalendarHeader
+                handleClickPrev={handleClickPrev}
+                handleClickNext={handleClickNext}
+                currentFullDate={currentFullDate}
+            />
+            {viewType !== VIEW_TYPE.YEAR && (
                 <div className="p-2 grid grid-cols-1 gap-4">
                     <CalendarGrid
-                        dayNames={dayNames}
                         days={days}
-                        isHoliday={isHoliday}
                         currentMonth={currentMonth}
-                        activeDate={activeDate}
-                        viewType={viewType}
-                        onSelectDay={onSelectDay}
+                        {...gridProps}
                     />
                 </div>
             )}
-            {viewType === 'year' && (
-                <div className="p-2 grid grid-cols-4 gap-4">
-                    {new Array(12).fill(9).map((elem, index) => (
-                        <div>
-                            <h1>{monthNames[index]}</h1>
-                            <CalendarGrid
-                                dayNames={dayNames}
-                                activeDate={activeDate}
-                                isHoliday={isHoliday}
-                                viewType={viewType}
-                                onSelectDay={onSelectDay}
-                                days={days[index]}
-                            />
-                        </div>
-                    ))}
+            {viewType === VIEW_TYPE.YEAR && (
+                <div className="p-2 grid grid-cols-3 gap-4">
+                    {new Array(MONTH_COUNT).fill(9).map((elem, monthIndex) => {
+                        return (
+                            <div key={monthIndex}>
+                                <h1>{monthNames[monthIndex]}</h1>
+                                <CalendarGrid
+                                    currentMonth={monthIndex}
+                                    days={days[monthIndex]}
+                                    {...gridProps}
+                                />
+                            </div>
+                        )
+                    })}
                 </div>
             )}
         </div>
     )
-}
+})
 
 const CalendarWithLogic = withLogic(Calendar)
 
