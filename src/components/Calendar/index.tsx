@@ -46,7 +46,7 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
         activeTodoDays: activeTodoDays ?? [],
     }
     return (
-        <div className="mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="max-w-max bg-white shadow-lg rounded-lg overflow-hidden">
             <CalendarHeader
                 handleClickPrev={handleClickPrev}
                 handleClickNext={handleClickNext}

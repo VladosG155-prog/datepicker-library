@@ -1,8 +1,9 @@
-import { FC, useCallback, useState } from 'react'
+import { FC, useCallback, useRef, useState } from 'react'
 import Calendar from '@components/Calendar'
 import { Input } from '@components/Input'
 import { IDatePickerProps } from './interfaces'
 import { VIEW_TYPE } from '@constants/enums'
+import { useClickOutside } from '../../hooks/useClickOutside'
 
 const DatePicker: FC<IDatePickerProps> = ({
     withHolidays = false,
@@ -14,7 +15,7 @@ const DatePicker: FC<IDatePickerProps> = ({
     minDate,
 }) => {
     const [date, setDate] = useState('')
-
+    const ref = useRef(null)
     const [range, setRange] = useState({ from: '', to: '' })
 
     const [isOpenCalendar, setIsOpenCalendar] = useState(false)
@@ -57,8 +58,10 @@ const DatePicker: FC<IDatePickerProps> = ({
     const rangeDateToString =
         range.from || range.to ? `${range.from}-${range.to}` : ''
 
+    useClickOutside(ref, () => setIsOpenCalendar(false))
+
     return (
-        <div>
+        <div ref={ref}>
             {withRange && (
                 <Input
                     onClick={handleClickInput}

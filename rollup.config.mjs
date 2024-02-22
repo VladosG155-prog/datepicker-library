@@ -6,6 +6,7 @@ import babel from '@rollup/plugin-babel'
 import postcss from 'rollup-plugin-postcss'
 import url from '@rollup/plugin-url'
 import alias from '@rollup/plugin-alias'
+import dts from "rollup-plugin-dts";
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -15,7 +16,8 @@ const __dirname = path.dirname(__filename)
 
 const projectRootDir = path.resolve(__dirname)
 
-export default {
+export default [
+    {
     input: 'src/index.ts',
     output: [
         {
@@ -30,11 +32,28 @@ export default {
     ],
     plugins: [
         resolve(),
+        postcss({
+            minimize: true,
+            modules: false,
+            use: {
+                sass: null,
+                stylus: null,
+                less: { javascriptEnabled: true },
+            },
+            extract: true,
+            config: {
+                path: './postcss.config.js',
+                ctx: null,
+            },
+            inject: {
+                insertAt: 'top',
+            },
+        }),
         commonjs(),
         svgr({ icon: true }),
         typescript(),
         babel({ babelHelpers: 'bundled' }),
-        postcss({ plugins: [] }),
+
         url(),
         alias({
             entries: [
@@ -68,5 +87,19 @@ export default {
                 },
             ],
         }),
+       {
+        
+       }
     ],
-}
+    external: ['react', 'react-dom'],
+},
+    {
+    input: `dist/types/index.d.ts`,
+    plugins: [dts()],
+    external: [/\.css$/],
+    output: {
+      file: `dist/types.d.ts`,
+      format: 'es',
+    },
+  }
+]
