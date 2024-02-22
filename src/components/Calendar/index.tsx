@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 import { monthNames } from '@constants/month'
-import { withLogic } from '../../decorator/withLogic'
+import { withLogic } from '../../decorators/withLogic'
 import { MONTH_COUNT, DAYS_POSITION } from './config'
 import { CalendarGrid } from './CalendarGrid'
 import { ICalendarProps } from './interfaces'
@@ -65,7 +65,7 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
                 <div className="p-2 grid grid-cols-3 gap-4">
                     {new Array(MONTH_COUNT).fill(9).map((elem, monthIndex) => {
                         return (
-                            <div>
+                            <div key={monthIndex}>
                                 <h1>{monthNames[monthIndex]}</h1>
                                 <CalendarGrid
                                     currentMonth={monthIndex}

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import Calendar from '.'
 import { monthNames } from '@constants/month'
 import '@testing-library/jest-dom'

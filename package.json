@@ -1,7 +1,17 @@
 {
-    "author": "Vlad Kolos",
+    "author": "Vlad Kolos (vladosk2004@gmail.com)",
+    "private": "false",
+    "keywords": [
+        "Datepicker, React-Datepicker",
+        "Calendar",
+        "Range date-picker"
+    ],
+    "files": [
+        "dist"
+    ],
     "devDependencies": {
         "@babel/core": "^7.23.9",
+        "@babel/preset-env": "^7.23.9",
         "@babel/preset-react": "^7.23.3",
         "@babel/preset-typescript": "^7.23.3",
         "@rollup/plugin-alias": "^5.1.0",
@@ -24,6 +34,7 @@
         "@testing-library/dom": "^9.3.4",
         "@testing-library/react": "^14.2.1",
         "@types/babel__core": "^7",
+        "@types/babel__preset-env": "^7",
         "@types/eslint": "^8",
         "@types/identity-obj-proxy": "^3",
         "@types/jest": "^29.5.12",
@@ -61,7 +72,7 @@
     "scripts": {
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
-        "test:unit": "jest",
+        "test:unit": "jest ",
         "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
         "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
         "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md}\" --config ./.prettierrc.json"

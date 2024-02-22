@@ -1,4 +1,4 @@
-import { ITodo } from '../../decorator/interfaces'
+import { ITodo } from '../../decorators/interfaces'
 
 export interface IModalProps {
     isOpen: boolean

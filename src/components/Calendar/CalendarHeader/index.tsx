@@ -1,5 +1,5 @@
 import { ReactComponent as ArrowLeft } from '@assets/Next.svg'
-import { ReactComponent as ArrowRight } from '@assets/Next.svg'
+import { ReactComponent as ArrowRight } from '@assets/Prev.svg'
 import { FC } from 'react'
 import { ICalendarHeaderProps } from './interfaces'
 
