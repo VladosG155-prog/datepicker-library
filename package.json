@@ -1,6 +1,7 @@
 {
     "author": "Vlad Kolos (vladosk2004@gmail.com)",
     "private": "false",
+    "name": "@vladosg155/datepicker-library",
     "keywords": [
         "Datepicker, React-Datepicker",
         "Calendar",
@@ -9,6 +10,7 @@
     "files": [
         "dist"
     ],
+    "repository": "https://github.com/VladosG155-prog/datepicker-library",
     "devDependencies": {
         "@babel/core": "^7.23.9",
         "@babel/preset-env": "^7.23.9",
