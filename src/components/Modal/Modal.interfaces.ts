@@ -5,5 +5,5 @@ export interface IModalProps {
     onClose: () => void
     onSubmit: (title: string) => void
     todos: ITodo[]
-    onRemove: (id: number) => void
+    onRemove: (id: string) => void
 }

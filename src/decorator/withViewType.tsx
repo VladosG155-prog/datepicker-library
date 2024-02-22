@@ -1,4 +1,4 @@
-import { ComponentType, useMemo, useState } from 'react'
+import { ComponentType, FC, useMemo, useState } from 'react'
 import { generateCalendarDays } from '../utils/generateDays'
 import { monthNames } from '../constants/month'
 
@@ -7,17 +7,29 @@ const nowDate = new Date(Date.now())
 import { ICalendarProps } from '@components/Calendar/interfaces'
 import { VIEW_TYPE } from '@constants/enums'
 import { isValidDate } from '@utils/isValidDate'
+import { transformDateToInput } from '@utils/transformDate'
 
 interface IWithViewTypeProps {
     days: { day: number; month: number; year: number }[]
-    handleClickNext: () => void
-    handleClickPrev: () => void
-    currentFullDate: string
+    handleClickNext?: () => void
+    handleClickPrev?: () => void
+    currentFullDate?: string
+    currentMonth?: number
 }
 
-export const withViewType = <P extends Object>(Component: ComponentType<P>) => {
-    return (props: ICalendarProps & P) => {
-        const { activeDate, viewType, isMondayFirst } = props
+const defaultDate = new Date(Date.now())
+const stringDefaultDate = transformDateToInput(
+    defaultDate.getDate(),
+    defaultDate.getMonth(),
+    defaultDate.getFullYear()
+)
+export const withViewType = (Component: FC<ICalendarProps>) => {
+    return (props: ICalendarProps) => {
+        const {
+            activeDate = stringDefaultDate,
+            viewType,
+            isMondayFirst,
+        } = props
 
         const rangeDate = activeDate.split('-')[1]
             ? activeDate.split('-')[1]

@@ -7,6 +7,10 @@ export interface IDay {
 }
 
 export interface ICalendarProps {
+    withHolidays?: boolean
+    withMondayFirst?: boolean
+    withRange?: boolean
+    withTodos?: boolean
     isHoliday?: (day: number, month?: number) => boolean
     onSelectDay: (val: string) => void
     activeDate: string

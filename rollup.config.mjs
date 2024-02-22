@@ -24,7 +24,7 @@ export default {
     plugins: [
         resolve(),
         commonjs(),
-        svgr(),
+        svgr({ icon: true }),
         typescript(),
         babel({ babelHelpers: 'bundled' }),
         postcss({ plugins: [] }),

@@ -18,23 +18,7 @@ const config: StorybookConfig = {
             },
         },
     ],
-    webpackFinal: async (config) => {
-        const imageRule = config.module?.rules?.find((rule) => {
-            const test = (rule as { test: RegExp }).test
-
-            if (!test) {
-                return false
-            }
-
-            return test.test('.svg')
-        }) as { [key: string]: unknown }
-
-        imageRule.exclude = /\.svg$/
-
-        config.module?.rules?.push({
-            test: /\.svg$/,
-            use: ['@svgr/webpack', 'url-loader'],
-        })
+    webpackFinal: (config) => {
         if (config.resolve) {
             config.resolve.alias = {
                 '@components': path.resolve(
@@ -48,6 +32,31 @@ const config: StorybookConfig = {
                 '@utils': path.resolve(__dirname, '..', 'src', 'utils'),
             }
         }
+        const imageRule = config.module?.rules?.find((rule) => {
+            const test = (rule as { test: RegExp }).test
+
+            if (!test) {
+                return false
+            }
+
+            return test.test('.svg')
+        }) as { [key: string]: unknown }
+
+        imageRule.exclude = /\.svg$/
+
+        config.module?.rules?.push({
+            test: /\.svg$/i,
+            use: [
+                {
+                    loader: '@svgr/webpack',
+                    options: {
+                        exportType: 'default',
+                        icon: true,
+                    },
+                },
+                'url-loader',
+            ],
+        })
 
         return config
     },

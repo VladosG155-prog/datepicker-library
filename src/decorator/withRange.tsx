@@ -1,8 +1,13 @@
 import { ICalendarProps } from '@components/Calendar/interfaces'
-import { ComponentType, useEffect, useState } from 'react'
+import { ComponentType, FC, useEffect, useState } from 'react'
 
-export const withRange = <P extends Object>(Component: ComponentType<P>) => {
-    return (props: P & ICalendarProps) => {
+interface IWithRange {
+    rangeDate: { from: string; to: string }
+    changeWithRange: (val: string) => void
+}
+
+export const withRange = <P extends ICalendarProps>(Component: FC<P>) => {
+    return (props: P) => {
         const { activeDate, onSelectDay } = props
 
         const [from, to] = activeDate.split('-')

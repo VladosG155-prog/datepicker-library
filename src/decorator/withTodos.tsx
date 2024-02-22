@@ -2,7 +2,7 @@ import { ComponentType, useEffect, useState } from 'react'
 import { ICalendarProps } from '@components/Calendar/interfaces'
 import { Modal } from '@components/Modal'
 import { ITodo } from './interfaces'
-
+import { v4 as uuidv4 } from 'uuid'
 type TodosObject = {
     [key: string]: ITodo[]
 }
@@ -29,7 +29,7 @@ export const withTodos = <P extends Object>(Component: ComponentType<P>) => {
     }
     const addTodo = (title: string) => {
         const todo = {
-            id: Math.floor(Math.random() * 1000),
+            id: uuidv4(),
             title,
         }
 
@@ -39,7 +39,7 @@ export const withTodos = <P extends Object>(Component: ComponentType<P>) => {
         localStorage.setItem('todos', JSON.stringify(currentTodos))
     }
 
-    const removeTodo = (id: number) => {
+    const removeTodo = (id: string) => {
         const currentTodos = { ...todos }
         const newTodos = currentTodos[currentDate].filter(
             (todo) => todo.id !== id
