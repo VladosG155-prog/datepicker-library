@@ -20,9 +20,7 @@ export interface ILogicProps {
     onSelectDay?: (val: string) => void
 }
 
-export const withLogic = <P extends ICalendarProps>(
-    Component: FC<ICalendarProps>
-) => {
+export const withLogic = <P extends ICalendarProps>(Component: FC<ICalendarProps>) => {
     return (props: ILogicProps) => {
         const calendarService = new CalendarService(Component)
         const ref = useRef()

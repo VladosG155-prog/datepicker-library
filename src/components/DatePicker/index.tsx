@@ -6,7 +6,7 @@ import { VIEW_TYPE } from '@constants/enums'
 import { useClickOutside } from '../../hooks/useClickOutside'
 import { isValidDate } from '@utils/isValidDate'
 
-const DatePicker: FC<IDatePickerProps> = ({
+export const DatePicker: FC<IDatePickerProps> = ({
     withHolidays = false,
     withMondayFirst = false,
     withRange = false,
@@ -65,14 +65,10 @@ const DatePicker: FC<IDatePickerProps> = ({
         }
     }
 
-    const rangeDateToString =
-        range.from || range.to ? `${range.from}-${range.to}` : ''
+    const rangeDateToString = range.from || range.to ? `${range.from}-${range.to}` : ''
 
     useClickOutside(ref, (e: MouseEvent | TouchEvent) => {
-        if (
-            e.target instanceof Element &&
-            !e.target.closest('[data-id="modal"]')
-        ) {
+        if (e.target instanceof Element && !e.target.closest('[data-id="modal"]')) {
             setIsOpenCalendar(false)
         }
     })
@@ -111,4 +107,3 @@ const DatePicker: FC<IDatePickerProps> = ({
         </div>
     )
 }
-export default DatePicker
