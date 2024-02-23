@@ -3,9 +3,9 @@ import { RefObject, useEffect } from 'react'
 export const useClickOutside = <T extends HTMLElement>(
     ref: RefObject<T>,
     handler: (event: TouchEvent | MouseEvent) => void
-): RefObject<T> => {
+) => {
     useEffect(() => {
-        const handleClickOutside = (event: TouchEvent | MouseEvent): void => {
+        const handleClickOutside = (event: TouchEvent | MouseEvent) => {
             if (ref.current && !ref.current.contains(event.target as Node)) {
                 handler(event)
             }

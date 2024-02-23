@@ -1,5 +1,5 @@
 import { ICalendarProps } from '@components/Calendar/interfaces'
-import { FC } from 'react'
+import { ComponentType, FC } from 'react'
 
 export class CalendarService {
     Calendar: FC<ICalendarProps>
@@ -8,7 +8,7 @@ export class CalendarService {
         this.Calendar = Calendar
     }
 
-    add(decorator: (Calendar: FC<ICalendarProps>) => FC<ICalendarProps>): void {
+    add(decorator: (Calendar: FC<ICalendarProps>) => FC<ICalendarProps>) {
         this.Calendar = decorator(this.Calendar)
     }
 }

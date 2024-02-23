@@ -1,9 +1,10 @@
-import { ICalendarProps } from '@components/Calendar/interfaces'
 import { holidays } from '@constants/holidays'
-import { ComponentType } from 'react'
+import { ComponentType, FC } from 'react'
 
-export const withHolidays = (Component: ComponentType<ICalendarProps>) => {
-    return (props: ICalendarProps) => {
+export const withHolidays = <P extends Object>(
+    Component: ComponentType<P>
+): FC<P> => {
+    return (props: P) => {
         const isHoliday = (day: number, month?: number): boolean => {
             return holidays.some(
                 (holiday) => holiday.day === day && holiday.month === month

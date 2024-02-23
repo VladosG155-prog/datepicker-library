@@ -7,7 +7,4 @@ export interface IDayCellProps {
     isActiveRangeDay: { from: boolean; to: boolean; mid: boolean }
     isActiveTodoDay?: boolean
     isDisabledByMaxMin: boolean
-    isShowTodo: boolean
-    dayOfWeek: number
-    onAddTodo: () => void
 }

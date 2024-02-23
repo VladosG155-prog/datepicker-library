@@ -1,6 +1,5 @@
 import { VIEW_TYPE } from '@constants/enums'
 import { generateYearsDays } from './generateYearsDays'
-import { IDay } from '@components/Calendar/interfaces'
 
 export const generateCalendarDays = (
     year: number,
@@ -8,9 +7,9 @@ export const generateCalendarDays = (
     startDay: number,
     viewType: VIEW_TYPE = VIEW_TYPE.MONTH,
     isMondayFirst = false
-): { [key: number]: IDay[] } => {
+) => {
     const days = []
-    const calendar: { [key: number]: IDay[] } = {}
+
     if (viewType === VIEW_TYPE.MONTH) {
         const daysInMonth = new Date(year, month + 1, 0).getDate()
         const firstDayOfWeek = new Date(year, month, 1).getDay()
@@ -38,7 +37,6 @@ export const generateCalendarDays = (
         for (let i = 1; i <= nextMonthDays; i++) {
             days.push({ day: i, month: month + 1, year })
         }
-        calendar[month] = days
     } else if (viewType === VIEW_TYPE.WEEK) {
         const startDate = new Date(year, month, startDay)
 
@@ -56,10 +54,9 @@ export const generateCalendarDays = (
             })
             startDate.setDate(startDate.getDate() + 1)
         }
-        calendar[month] = days
     } else if (viewType === VIEW_TYPE.YEAR) {
         return generateYearsDays(year, isMondayFirst)
     }
 
-    return calendar
+    return days
 }
