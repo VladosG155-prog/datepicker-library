@@ -8,7 +8,7 @@ export const generateCalendarDays = (
     startDay: number,
     viewType: VIEW_TYPE = VIEW_TYPE.MONTH,
     isMondayFirst = false
-) => {
+): { [key: number]: IDay[] } => {
     const days = []
     const calendar: { [key: number]: IDay[] } = {}
     if (viewType === VIEW_TYPE.MONTH) {

@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react'
+import { FC } from 'react'
 import { DayCell } from '@components/DayCell'
 import { transformDateToInput } from '@utils/transformDate'
 import { isActiveRangeDay, isDisabledByMaxMinDate } from './config'
@@ -21,7 +21,11 @@ export const CalendarGrid: FC<ICalendarGridProps> = (props) => {
         maxDate,
     } = props
 
-    const handleCellClick = (day: number, month: number, year: number) => {
+    const handleCellClick = (
+        day: number,
+        month: number,
+        year: number
+    ): void => {
         if (isRange) {
             changeWithRange(transformDateToInput(day, month, year))
         } else {

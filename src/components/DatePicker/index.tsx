@@ -21,7 +21,7 @@ const DatePicker: FC<IDatePickerProps> = ({
 
     const [isOpenCalendar, setIsOpenCalendar] = useState(false)
 
-    const handleClickInput = () => {
+    const handleClickInput = (): void => {
         setIsOpenCalendar(true)
     }
 
@@ -31,20 +31,23 @@ const DatePicker: FC<IDatePickerProps> = ({
         }
     }, [date])
 
-    const handleChangeInput = useCallback((val: string) => {
-        if (withRange) {
-            setRange((prev) => {
-                return {
-                    ...prev,
-                    to: val,
-                }
-            })
-        } else {
-            setDate(val)
-        }
-    }, [])
+    const handleChangeInput = useCallback(
+        (val: string): void => {
+            if (withRange) {
+                setRange((prev) => {
+                    return {
+                        ...prev,
+                        to: val,
+                    }
+                })
+            } else {
+                setDate(val)
+            }
+        },
+        [withRange]
+    )
 
-    const handleChangeSecondInput = useCallback((val: string) => {
+    const handleChangeSecondInput = useCallback((val: string): void => {
         setRange((prev) => {
             return {
                 ...prev,
@@ -53,7 +56,7 @@ const DatePicker: FC<IDatePickerProps> = ({
         })
     }, [])
 
-    const handleSelectDate = (val: string) => {
+    const handleSelectDate = (val: string): void => {
         if (withRange) {
             const [from, to] = val.split('-')
             setRange({ from, to: to })

@@ -28,7 +28,7 @@ describe('Calendar component', () => {
     })
 
     test('holidays should be exist', () => {
-        const { getByText } = render(
+        const {} = render(
             <Calendar
                 withHolidays
                 onSelectDay={jest.fn()}

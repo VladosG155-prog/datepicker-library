@@ -1,15 +1,9 @@
 import { FC, FormEvent, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { IModalProps } from './Modal.interfaces'
+import { IModalProps } from './interfaces'
 import { useClickOutside } from '../../hooks/useClickOutside'
 
-export const Modal: FC<IModalProps> = ({
-    isOpen,
-    onClose,
-    onSubmit,
-    todos,
-    onRemove,
-}) => {
+export const Modal: FC<IModalProps> = ({ isOpen, onClose, onSubmit, todos, onRemove }) => {
     const [todoText, setTodoText] = useState('')
     const modalRef = useRef(null)
     const inputRef = useRef<HTMLInputElement>(null)
@@ -20,7 +14,7 @@ export const Modal: FC<IModalProps> = ({
         }
     }, [])
 
-    const handleSubmit = (event: FormEvent) => {
+    const handleSubmit = (event: FormEvent): void => {
         event.preventDefault()
         onSubmit(todoText)
         setTodoText('')
@@ -34,7 +28,8 @@ export const Modal: FC<IModalProps> = ({
     return createPortal(
         <div
             data-id="modal"
-            className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50"
+            className="fixed top-0 left-0 w-full h-full flex justify-center
+            items-center bg-black bg-opacity-50"
         >
             <form
                 ref={modalRef}
@@ -47,10 +42,7 @@ export const Modal: FC<IModalProps> = ({
                         <li key={id} className="flex items-center mb-2">
                             <span className="mr-2">№: {index + 1}</span>
                             <span>{title}</span>
-                            <button
-                                onClick={() => onRemove(id)}
-                                className="ml-2 text-red-500"
-                            >
+                            <button onClick={() => onRemove(id)} className="ml-2 text-red-500">
                                 &#10006;
                             </button>
                         </li>
@@ -68,7 +60,8 @@ export const Modal: FC<IModalProps> = ({
                     <div className="flex justify-end">
                         <button
                             onClick={onClose}
-                            className="mr-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded"
+                            className="mr-2 bg-gray-300 hover:bg-gray-400
+                            text-gray-800 font-semibold py-2 px-4 rounded"
                         >
                             Cancel
                         </button>

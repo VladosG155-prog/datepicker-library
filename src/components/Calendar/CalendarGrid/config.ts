@@ -6,7 +6,7 @@ export const isActiveRangeDay = (
     month: number,
     year: number,
     rangeValues?: { from: string; to: string }
-) => {
+): { from: boolean; to: boolean; mid: boolean } => {
     if (!rangeValues) {
         return { from: false, to: false, mid: false }
     }
@@ -39,7 +39,7 @@ export const isDisabledByMaxMinDate = (
     day: number,
     month: number,
     year: number
-) => {
+): boolean => {
     const currentDate = new Date(year, month, day)
 
     if ((max && currentDate > max) || (min && currentDate < min)) {

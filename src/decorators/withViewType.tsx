@@ -1,4 +1,4 @@
-import { ComponentType, FC, useMemo, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { generateCalendarDays } from '../utils/generateDays'
 import { monthNames } from '../constants/month'
 
@@ -28,9 +28,7 @@ export const withViewType = (Component: FC<ICalendarProps>) => {
             ? activeDate.split('-')[1]
             : activeDate.split('-')[0]
 
-        const [_, selectedMonth, selectedYear] = rangeDate
-            .split('/')
-            .map(Number)
+        const [, selectedMonth, selectedYear] = rangeDate.split('/').map(Number)
 
         const selectedDate = new Date(selectedYear, selectedMonth - 1)
         const [currentDate, setCurrentDate] = useState(
@@ -73,7 +71,7 @@ export const withViewType = (Component: FC<ICalendarProps>) => {
                     viewType,
                     isMondayFirst
                 ),
-            [viewType, isMondayFirst, currentDate]
+            [viewType, isMondayFirst, currentMonth, currentYear, currentDate]
         )
 
         let currentFullDate = ''

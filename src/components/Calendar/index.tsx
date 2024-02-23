@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import { monthNames } from '@constants/month'
 import { withLogic } from '../../decorators/withLogic'
-import { MONTH_COUNT, DAYS_POSITION } from './config'
+import { DAYS_POSITION } from './config'
 import { CalendarGrid } from './CalendarGrid'
 import { ICalendarProps } from './interfaces'
 import { CalendarHeader } from './CalendarHeader'
