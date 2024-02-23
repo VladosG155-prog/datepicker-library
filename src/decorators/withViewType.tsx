@@ -15,6 +15,7 @@ const stringDefaultDate = transformDateToInput(
     defaultDate.getMonth(),
     defaultDate.getFullYear()
 )
+
 export const withViewType = (Component: FC<ICalendarProps>) => {
     return (props: ICalendarProps) => {
         const {

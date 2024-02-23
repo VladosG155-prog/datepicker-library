@@ -34,17 +34,18 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
         : DAYS_POSITION.fromSun
 
     const gridProps = {
-        dayNames: dayNames,
+        dayNames,
         maxDate: maxDate || null,
         minDate: minDate || null,
         rangeValues: rangeDate,
-        isHoliday: isHoliday,
-        activeDate: activeDate,
-        toggleTodoModal: toggleTodoModal,
-        onSelectDay: onSelectDay,
-        changeWithRange: changeWithRange,
-        isRange: isRange,
-        activeTodoDays: activeTodoDays ?? [],
+        isHoliday,
+        activeDate,
+        toggleTodoModal,
+        onSelectDay,
+        changeWithRange,
+        isRange,
+        activeTodoDays: activeTodoDays ?? null,
+        viewType,
     }
 
     const isYearView = viewType === VIEW_TYPE.YEAR
@@ -63,10 +64,9 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
             >
                 {Object.keys(days).map((day) => {
                     return (
-                        <div className="flex flex-col">
+                        <div className="flex flex-col" key={day}>
                             {isYearView && <h2>{[monthNames[+day]]}</h2>}
                             <CalendarGrid
-                                key={day}
                                 currentMonth={isYearView ? +day : currentMonth}
                                 days={days[+day]}
                                 {...gridProps}

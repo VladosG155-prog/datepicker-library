@@ -23,7 +23,7 @@ export interface ICalendarProps {
     handleClickNext: () => void
     handleClickPrev: () => void
     currentFullDate: string
-    toggleTodoModal?: (val: string) => void
+    toggleTodoModal: (val: string) => void
     activeTodoDays?: string[]
     maxDate?: Date
     minDate?: Date

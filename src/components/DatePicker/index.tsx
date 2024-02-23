@@ -1,9 +1,10 @@
-import { FC, useCallback, useRef, useState } from 'react'
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
 import Calendar from '@components/Calendar'
 import { Input } from '@components/Input'
 import { IDatePickerProps } from './interfaces'
 import { VIEW_TYPE } from '@constants/enums'
 import { useClickOutside } from '../../hooks/useClickOutside'
+import { isValidDate } from '@utils/isValidDate'
 
 const DatePicker: FC<IDatePickerProps> = ({
     withHolidays = false,
@@ -23,6 +24,12 @@ const DatePicker: FC<IDatePickerProps> = ({
     const handleClickInput = () => {
         setIsOpenCalendar(true)
     }
+
+    useEffect(() => {
+        if (isValidDate(date)) {
+            setIsOpenCalendar(true)
+        }
+    }, [date])
 
     const handleChangeInput = useCallback((val: string) => {
         if (withRange) {
@@ -58,7 +65,14 @@ const DatePicker: FC<IDatePickerProps> = ({
     const rangeDateToString =
         range.from || range.to ? `${range.from}-${range.to}` : ''
 
-    useClickOutside(ref, () => setIsOpenCalendar(false))
+    useClickOutside(ref, (e: MouseEvent | TouchEvent) => {
+        if (
+            e.target instanceof Element &&
+            !e.target.closest('[data-id="modal"]')
+        ) {
+            setIsOpenCalendar(false)
+        }
+    })
 
     return (
         <div ref={ref}>

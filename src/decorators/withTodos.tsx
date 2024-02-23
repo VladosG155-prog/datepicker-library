@@ -56,13 +56,10 @@ export const withTodos = <P extends Object>(Component: ComponentType<P>) => {
         }
     }
 
-    
-
     return (props: P) => {
         return (
             <>
                 <Modal
-                    
                     isOpen={isShowModal}
                     onSubmit={addTodo}
                     onClose={handleCloseModal}

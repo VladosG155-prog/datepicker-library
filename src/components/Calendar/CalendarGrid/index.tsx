@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useCallback } from 'react'
 import { DayCell } from '@components/DayCell'
 import { transformDateToInput } from '@utils/transformDate'
 import { isActiveRangeDay, isDisabledByMaxMinDate } from './config'
@@ -57,20 +57,22 @@ export const CalendarGrid: FC<ICalendarGridProps> = (props) => {
                     year
                 )
 
+                const dayOfWeek = new Date(year, month, day).getDay()
+
                 return (
                     <DayCell
+                        dayOfWeek={dayOfWeek}
                         day={day}
                         key={`${day}-${month}-${year}`}
                         isPrevMonth={month === currentMonth}
                         isDisabledByMaxMin={disabledByMaxMinValues}
                         isHoliday={isHoliday && isHoliday(day, month)}
-                        onClick={() => {
-                            handleCellClick(day, month, year)
-                            toggleTodoModal && toggleTodoModal(stringDate)
-                        }}
+                        onClick={() => handleCellClick(day, month, year)}
+                        onAddTodo={() => toggleTodoModal(stringDate)}
                         isActiveDay={activeDate === stringDate}
                         isActiveRangeDay={isActiveDayRange}
                         isActiveTodoDay={!!activeTodoDays?.includes(stringDate)}
+                        isShowTodo={!!activeTodoDays}
                     />
                 )
             })}
