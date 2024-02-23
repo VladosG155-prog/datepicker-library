@@ -1,5 +1,10 @@
 import { ICalendarProps } from '@components/Calendar/interfaces'
-import { FC, useEffect, useState } from 'react'
+import { ComponentType, FC, useEffect, useState } from 'react'
+
+interface IWithRange {
+    rangeDate: { from: string; to: string }
+    changeWithRange: (val: string) => void
+}
 
 export const withRange = <P extends ICalendarProps>(Component: FC<P>) => {
     return (props: P) => {
@@ -19,9 +24,9 @@ export const withRange = <P extends ICalendarProps>(Component: FC<P>) => {
             ) {
                 onSelectDay(`${rangeDate.from}-${rangeDate.to}`)
             }
-        }, [rangeDate, onSelectDay, to, from])
+        }, [rangeDate])
 
-        const changeWithRange = (val: string): void => {
+        const changeWithRange = (val: string) => {
             setRangeDate((prevRangeDate) => {
                 if (!prevRangeDate.from) {
                     return { from: val, to: '' }

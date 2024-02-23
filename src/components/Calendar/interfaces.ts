@@ -17,13 +17,13 @@ export interface ICalendarProps {
     isMondayFirst?: boolean
     isRange?: boolean
     viewType?: VIEW_TYPE
-    days: { [key: number]: IDay[] }
+    days: IDay[] | { [key: number]: IDay[] }
     currentDate: Date
     currentMonth: number
     handleClickNext: () => void
     handleClickPrev: () => void
     currentFullDate: string
-    toggleTodoModal: (val: string) => void
+    toggleTodoModal?: (val: string) => void
     activeTodoDays?: string[]
     maxDate?: Date
     minDate?: Date

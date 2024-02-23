@@ -8,10 +8,10 @@ export interface ICalendarGridProps {
     currentMonth?: number
     isRange?: boolean
     dayNames: string[]
-    toggleTodoModal: (val: string) => void
+    toggleTodoModal?: (val: string) => void
     changeWithRange: (val: string) => void
     rangeValues?: { from: string; to: string }
-    activeTodoDays: string[] | null
+    activeTodoDays: string[]
     maxDate: Date | null
     minDate: Date | null
 }
