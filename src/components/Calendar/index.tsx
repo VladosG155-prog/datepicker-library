@@ -6,6 +6,7 @@ import { CalendarGrid } from './CalendarGrid'
 import { ICalendarProps } from './interfaces'
 import { CalendarHeader } from './CalendarHeader'
 import { VIEW_TYPE } from '@constants/enums'
+import classNames from 'classnames'
 
 const Calendar: FC<ICalendarProps> = memo((props) => {
     const {
@@ -45,6 +46,9 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
         isRange: isRange,
         activeTodoDays: activeTodoDays ?? [],
     }
+
+    const isYearView = viewType === VIEW_TYPE.YEAR
+
     return (
         <div className="max-w-max bg-white shadow-lg rounded-lg overflow-hidden">
             <CalendarHeader
@@ -52,31 +56,25 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
                 handleClickNext={handleClickNext}
                 currentFullDate={currentFullDate}
             />
-            {viewType !== VIEW_TYPE.YEAR && (
-                <div className="p-2 grid grid-cols-1 gap-4">
-                    <CalendarGrid
-                        days={days}
-                        currentMonth={currentMonth}
-                        {...gridProps}
-                    />
-                </div>
-            )}
-            {viewType === VIEW_TYPE.YEAR && (
-                <div className="p-2 grid grid-cols-3 gap-4">
-                    {new Array(MONTH_COUNT).fill(9).map((elem, monthIndex) => {
-                        return (
-                            <div key={monthIndex}>
-                                <h1>{monthNames[monthIndex]}</h1>
-                                <CalendarGrid
-                                    currentMonth={monthIndex}
-                                    days={days[monthIndex]}
-                                    {...gridProps}
-                                />
-                            </div>
-                        )
-                    })}
-                </div>
-            )}
+            <div
+                className={classNames('p-2 grid grid-cols-1 gap-4', {
+                    'grid-cols-3': isYearView,
+                })}
+            >
+                {Object.keys(days).map((day) => {
+                    return (
+                        <div className="flex flex-col">
+                            {isYearView && <h2>{[monthNames[+day]]}</h2>}
+                            <CalendarGrid
+                                key={day}
+                                currentMonth={isYearView ? +day : currentMonth}
+                                days={days[+day]}
+                                {...gridProps}
+                            />
+                        </div>
+                    )
+                })}
+            </div>
         </div>
     )
 })

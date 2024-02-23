@@ -9,14 +9,6 @@ import { VIEW_TYPE } from '@constants/enums'
 import { isValidDate } from '@utils/isValidDate'
 import { transformDateToInput } from '@utils/transformDate'
 
-interface IWithViewTypeProps {
-    days: { day: number; month: number; year: number }[]
-    handleClickNext?: () => void
-    handleClickPrev?: () => void
-    currentFullDate?: string
-    currentMonth?: number
-}
-
 const defaultDate = new Date(Date.now())
 const stringDefaultDate = transformDateToInput(
     defaultDate.getDate(),

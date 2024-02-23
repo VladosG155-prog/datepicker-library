@@ -25,7 +25,7 @@ export const Modal: FC<IModalProps> = ({
     if (!isOpen) return null
 
     return createPortal(
-        <div ref={ref} className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+        <div  className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
             <form
                 onSubmit={handleSubmit}
                 className="bg-white p-8 rounded shadow-lg relative"
