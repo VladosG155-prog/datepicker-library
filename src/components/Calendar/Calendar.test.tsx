@@ -18,22 +18,13 @@ describe('Calendar component', () => {
     })
 
     test('holidays should be exist', () => {
-        const { getByText } = render(
-            <Calendar withHolidays activeDate="12/02/2024" />
-        )
+        const { getByText } = render(<Calendar withHolidays activeDate="12/02/2024" />)
         const elem = getByText(23)
-        console.log('class', elem.classList)
 
-        expect(elem.classList).toBeInTheDocument()
+        expect(elem).toBeInTheDocument()
     })
 
     test('holidays should be exist', () => {
-        const {} = render(
-            <Calendar
-                withHolidays
-                onSelectDay={jest.fn()}
-                activeDate="12/02/2024"
-            />
-        )
+        const {} = render(<Calendar withHolidays onSelectDay={jest.fn()} activeDate="12/02/2024" />)
     })
 })
