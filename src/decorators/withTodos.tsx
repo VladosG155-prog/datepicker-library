@@ -1,16 +1,13 @@
 import { FC, useState } from 'react'
 import { Modal } from '@components/Modal'
-import { ITodo } from './interfaces'
+import { ITodosObject } from './interfaces'
 import { v4 as uuidv4 } from 'uuid'
 import { ICalendarProps } from '@components/Calendar/interfaces'
-type TodosObject = {
-    [key: string]: ITodo[]
-}
 
 export const withTodos = <P extends ICalendarProps>(Component: FC<P>): FC<P> => {
     return (props: P) => {
         const [isShowModal, setIsShowModal] = useState(false)
-        const [todos, setTodos] = useState<TodosObject>(
+        const [todos, setTodos] = useState<ITodosObject>(
             JSON.parse(localStorage.getItem('todos') || '{}')
         )
 
