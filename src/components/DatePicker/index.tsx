@@ -14,6 +14,7 @@ export const DatePicker: FC<IDatePickerProps> = ({
     viewType = VIEW_TYPE.MONTH,
     maxDate,
     minDate,
+    onChange,
 }) => {
     const [date, setDate] = useState('')
     const ref = useRef(null)
@@ -26,8 +27,15 @@ export const DatePicker: FC<IDatePickerProps> = ({
     }
 
     useEffect(() => {
+        if (range.to && range.from) {
+            onChange(`${range.from}-${range.to}`)
+        }
+    }, [range])
+
+    useEffect(() => {
         if (isValidDate(date)) {
             setIsOpenCalendar(true)
+            onChange(date)
         }
     }, [date])
 

@@ -10,7 +10,7 @@ export const DayCell: FC<IDayCellProps> = memo(
         isPrevMonth,
         onClick,
         isActiveDay = false,
-        isActiveRangeDay,
+        isActiveRangeDay = { from: false, to: false, mid: false },
         isActiveTodoDay,
         isDisabledByMaxMin,
         isShowTodo,
@@ -19,14 +19,22 @@ export const DayCell: FC<IDayCellProps> = memo(
     }) => {
         const [isHovered, setIsHovered] = useState(false)
 
+        const onMouseEnter = (): void => {
+            setIsHovered(true)
+        }
+
+        const onMouseLeave = (): void => {
+            setIsHovered(false)
+        }
+
         return (
             <div className="relative">
                 <button
                     disabled={!isPrevMonth || isDisabledByMaxMin}
                     onClick={onClick}
                     onDoubleClick={onAddTodo}
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
+                    onMouseEnter={onMouseEnter}
+                    onMouseLeave={onMouseLeave}
                     className={cn(
                         'w-8 h-8 flex relative justify-center p-5 text-sm items-center font-semibold rounded-lg text-center text-gray-default  ',
                         {

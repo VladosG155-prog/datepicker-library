@@ -3,7 +3,7 @@ export interface IDayCellProps {
     isHoliday?: boolean
     isPrevMonth: boolean
     onClick: () => void
-    isActiveDay: boolean
+    isActiveDay?: boolean
     isActiveRangeDay: { from: boolean; to: boolean; mid: boolean }
     isActiveTodoDay?: boolean
     isDisabledByMaxMin: boolean

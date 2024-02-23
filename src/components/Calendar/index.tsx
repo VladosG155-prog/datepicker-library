@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import { monthNames } from '@constants/month'
 import { withLogic } from '../../decorators/withLogic'
-import { DAYS_POSITION } from './config'
+import { DAYS_POSITION, getDayKeys } from './config'
 import { CalendarGrid } from './CalendarGrid'
 import { ICalendarProps } from './interfaces'
 import { CalendarHeader } from './CalendarHeader'
@@ -29,9 +29,7 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
         rangeDate,
     } = props
 
-    const dayNames = isMondayFirst
-        ? DAYS_POSITION.fromMon
-        : DAYS_POSITION.fromSun
+    const dayNames = isMondayFirst ? DAYS_POSITION.fromMon : DAYS_POSITION.fromSun
 
     const gridProps = {
         dayNames,
@@ -50,6 +48,8 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
 
     const isYearView = viewType === VIEW_TYPE.YEAR
 
+    const dayKeys = getDayKeys(days)
+
     return (
         <div className="max-w-max bg-white shadow-lg rounded-lg overflow-hidden">
             <CalendarHeader
@@ -62,7 +62,7 @@ const Calendar: FC<ICalendarProps> = memo((props) => {
                     'grid-cols-3': isYearView,
                 })}
             >
-                {Object.keys(days).map((day) => {
+                {dayKeys.map((day) => {
                     return (
                         <div className="flex flex-col" key={day}>
                             {isYearView && <h2>{[monthNames[+day]]}</h2>}

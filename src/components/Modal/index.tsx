@@ -28,6 +28,7 @@ export const Modal: FC<IModalProps> = ({ isOpen, onClose, onSubmit, todos, onRem
     return createPortal(
         <div
             data-id="modal"
+            data-testid="modal"
             className="fixed top-0 left-0 w-full h-full flex justify-center
             items-center bg-black bg-opacity-50"
         >
@@ -42,7 +43,11 @@ export const Modal: FC<IModalProps> = ({ isOpen, onClose, onSubmit, todos, onRem
                         <li key={id} className="flex items-center mb-2">
                             <span className="mr-2">№: {index + 1}</span>
                             <span>{title}</span>
-                            <button onClick={() => onRemove(id)} className="ml-2 text-red-500">
+                            <button
+                                data-testid="remove-todo"
+                                onClick={() => onRemove(id)}
+                                className="ml-2 text-red-500"
+                            >
                                 &#10006;
                             </button>
                         </li>
@@ -69,7 +74,7 @@ export const Modal: FC<IModalProps> = ({ isOpen, onClose, onSubmit, todos, onRem
                             type="submit"
                             className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
                         >
-                            Add Todo
+                            Add new todo
                         </button>
                     </div>
                 </div>

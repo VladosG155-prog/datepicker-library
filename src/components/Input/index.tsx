@@ -2,6 +2,7 @@ import { ChangeEvent, FC, KeyboardEvent, memo } from 'react'
 import { ReactComponent as CalendarIcon } from '../../assets/Calendar.svg'
 import { ReactComponent as CloseIcon } from '../../assets/Clear.svg'
 import { validateInput } from '@utils/validateInput'
+import { formatDate } from './config'
 
 interface IInputProps {
     value: string
@@ -13,14 +14,9 @@ interface IInputProps {
 
 export const Input: FC<IInputProps> = memo((props) => {
     const { value = '', onChange, onClick, maxValue, minValue } = props
-    const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        const inputDate = e.target.value
 
-        const formattedDate = inputDate
-            .replace(/\D/g, '')
-            .replace(/^(\d{2})/, '$1/')
-            .replace(/^(\d{2})\/(\d{2})/, '$1/$2/')
-            .slice(0, 10)
+    const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+        const formattedDate = formatDate(e.target.value)
         onChange(formattedDate)
     }
 
@@ -42,7 +38,11 @@ export const Input: FC<IInputProps> = memo((props) => {
         <>
             {!valid && <span className="text-red-500 text-sm">{message}</span>}
             <div className="w-[250px] relative mb-5">
-                <i onClick={onClick} className="absolute top-4 left-4 cursor-pointer ">
+                <i
+                    data-testid="calendar-icon"
+                    onClick={onClick}
+                    className="absolute top-4 left-4 cursor-pointer "
+                >
                     <CalendarIcon className=" hover:fill-gray-800 fill-slate-400" />
                 </i>
                 <input
@@ -54,7 +54,11 @@ export const Input: FC<IInputProps> = memo((props) => {
                     className="border-gray-100 w-full border-2 rounded-lg py-2.5 pl-9 pr-3.5 font-normal text-gray-default"
                 />
                 {value.length > 0 && (
-                    <i onClick={handleClearInput} className="absolute top-4 right-4 cursor-pointer">
+                    <i
+                        data-testid="clear-icon"
+                        onClick={handleClearInput}
+                        className="absolute top-4 right-4 cursor-pointer"
+                    >
                         <CloseIcon />
                     </i>
                 )}
