@@ -1,3 +1,4 @@
-import { Calendar } from './components/Calendar'
+import './tailwind.css'
+import { DatePicker } from '@components/DatePicker'
 
-export { Calendar }
+export { DatePicker }

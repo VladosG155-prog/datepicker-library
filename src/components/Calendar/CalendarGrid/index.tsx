@@ -1,53 +1,77 @@
 import { FC } from 'react'
-import { DayCell } from '../../../components/DayCell'
-import { transformDateToInput } from '../../../utils/transformDate'
+import { DayCell } from '@components/DayCell'
+import { transformDateToInput } from '@utils/transformDate'
+import { isActiveRangeDay, isDisabledByMaxMinDate } from './config'
+import { ICalendarGridProps } from './interfaces'
 
-interface ICalendarGridProps {
-    days: { day: number; month: number; year: number }[]
-    isHoliday?: (day: number, month?: number) => boolean
-    onSelectDay: (val: string) => void
-    activeDate: string
-    currentMonth?: number
-    dayNames: string[]
-    viewType: 'month' | 'week' | 'year'
-}
+export const CalendarGrid: FC<ICalendarGridProps> = (props) => {
+    const {
+        days,
+        isHoliday,
+        onSelectDay,
+        currentMonth,
+        activeDate,
+        dayNames,
+        isRange,
+        changeWithRange,
+        rangeValues,
+        activeTodoDays,
+        toggleTodoModal,
+        minDate,
+        maxDate,
+    } = props
 
-export const CalendarGrid: FC<ICalendarGridProps> = ({
-    days,
-    isHoliday,
-    onSelectDay,
-    currentMonth,
-    activeDate,
-    dayNames,
-    viewType,
-}) => {
-    console.log(currentMonth)
+    const handleCellClick = (day: number, month: number, year: number) => (): void => {
+        if (isRange) {
+            changeWithRange(transformDateToInput(day, month, year))
+        } else {
+            onSelectDay(transformDateToInput(day, month, year))
+        }
+    }
+
+    const onToggleTodo = (val: string) => () => {
+        toggleTodoModal(val)
+    }
 
     return (
-        <div className="grid grid-cols-7 gap-2">
+        <div className="grid grid-cols-7">
             {dayNames.map((day) => (
-                <div
-                    key={day}
-                    className="w-8 text-sm font-bold text-center text-gray-default"
-                >
+                <div key={day} className="w-8 text-sm font-bold text-center text-gray-default">
                     {day}
                 </div>
             ))}
 
-            {days.map(({ day, month, year }) => (
-                <DayCell
-                    day={day}
-                    key={`${day}-${month}-${year}`}
-                    isPrevMonth={currentMonth ? month === currentMonth : true}
-                    isHoliday={isHoliday && isHoliday(day, month)}
-                    onClick={() => {
-                        onSelectDay(transformDateToInput(day, month, year))
-                    }}
-                    isActiveDay={
-                        activeDate === transformDateToInput(day, month, year)
-                    }
-                />
-            ))}
+            {days.map(({ day, month, year }) => {
+                const stringDate = transformDateToInput(day, month, year)
+                const isActiveDayRange = isActiveRangeDay(day, month, year, rangeValues)
+
+                const disabledByMaxMinValues = isDisabledByMaxMinDate(
+                    maxDate,
+                    minDate,
+                    day,
+                    month,
+                    year
+                )
+
+                const dayOfWeek = new Date(year, month, day).getDay()
+
+                return (
+                    <DayCell
+                        dayOfWeek={dayOfWeek}
+                        day={day}
+                        key={`${day}-${month}-${year}`}
+                        isPrevMonth={month === currentMonth}
+                        isDisabledByMaxMin={disabledByMaxMinValues}
+                        isHoliday={isHoliday && isHoliday(day, month)}
+                        onClick={handleCellClick(day, month, year)}
+                        onAddTodo={onToggleTodo(stringDate)}
+                        isActiveDay={activeDate === stringDate}
+                        isActiveRangeDay={isActiveDayRange}
+                        isActiveTodoDay={!!activeTodoDays?.includes(stringDate)}
+                        isShowTodo={!!activeTodoDays}
+                    />
+                )
+            })}
         </div>
     )
 }

@@ -1,22 +1,25 @@
+import { VIEW_TYPE } from '@constants/enums'
 import { generateYearsDays } from './generateYearsDays'
+import { IDay } from '@components/Calendar/interfaces'
 
 export const generateCalendarDays = (
     year: number,
     month: number,
-    viewType: 'month' | 'week' | 'year' = 'month',
-    isMondayFirst: boolean = false
-) => {
-    let days = []
-    if (viewType === 'month') {
+    startDay: number,
+    viewType: VIEW_TYPE = VIEW_TYPE.MONTH,
+    isMondayFirst = false
+): { [key: number]: IDay[] } => {
+    const days = []
+    const calendar: { [key: number]: IDay[] } = {}
+    if (viewType === VIEW_TYPE.MONTH) {
         const daysInMonth = new Date(year, month + 1, 0).getDate()
         const firstDayOfWeek = new Date(year, month, 1).getDay()
-
         const changePosition = isMondayFirst
             ? firstDayOfWeek - 1
             : firstDayOfWeek
-
         const prevMonthDays = firstDayOfWeek === 0 ? 6 : changePosition
         const prevMonthLastDay = new Date(year, month, 0).getDate()
+
         for (
             let i = prevMonthLastDay - prevMonthDays + 1;
             i <= prevMonthLastDay;
@@ -29,33 +32,34 @@ export const generateCalendarDays = (
             days.push({ day: i, month, year })
         }
 
-        const countOfDays = 6 * 7 // 6 rows of 7 days
+        const countOfDays = 6 * 7
         const nextMonthDays = countOfDays - days.length
+
         for (let i = 1; i <= nextMonthDays; i++) {
             days.push({ day: i, month: month + 1, year })
         }
-    } else if (viewType === 'week') {
-        const firstDayOfWeek = new Date(year, month, 1).getDay()
-        const daysInMonth = new Date(year, month + 1, 0).getDate()
+        calendar[month] = days
+    } else if (viewType === VIEW_TYPE.WEEK) {
+        const startDate = new Date(year, month, startDay)
 
-        let currentDay = 1
-        let currentMonth = month
-        for (let i = 0; i < 7; i++) {
-            if (i >= firstDayOfWeek) {
-                days.push({ day: currentDay, month: currentMonth, year })
-                currentDay++
-            } else {
-                const prevMonthLastDay = new Date(year, month, 0).getDate()
-                days.push({
-                    day: prevMonthLastDay - (firstDayOfWeek - i) + 1,
-                    month: month - 1,
-                    year,
-                })
-            }
+        if (isMondayFirst) {
+            const startOfWeek = startDate.getDay()
+            const daysToMonday = startOfWeek === 0 ? 6 : startOfWeek - 1
+            startDate.setDate(startDate.getDate() - daysToMonday)
         }
-    } else if (viewType === 'year') {
-        return generateYearsDays(year)
+
+        for (let i = 0; i < 7; i++) {
+            days.push({
+                day: startDate.getDate(),
+                month: startDate.getMonth(),
+                year: startDate.getFullYear(),
+            })
+            startDate.setDate(startDate.getDate() + 1)
+        }
+        calendar[month] = days
+    } else if (viewType === VIEW_TYPE.YEAR) {
+        return generateYearsDays(year, isMondayFirst)
     }
 
-    return days
+    return calendar
 }

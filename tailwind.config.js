@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-    content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
+    content: ['./index.html', './src/**/*.{js,ts,jsx,tsx,mdx}'],
     theme: {
         fontSize: {
             sm: '13px',
@@ -19,6 +19,8 @@ export default {
                     disabled: '#AAAAAA',
                 },
                 blue: {
+                    50: '#2f80ed4d',
+                    100: '#2f80ed99',
                     300: '#2F80ED',
                 },
             },

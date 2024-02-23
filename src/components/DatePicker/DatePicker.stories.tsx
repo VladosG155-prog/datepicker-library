@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import DatePicker from '@components/DatePicker'
+import { DatePicker } from '@components/DatePicker'
 
 const meta = {
     title: 'Components/Datepicker',
@@ -26,4 +26,12 @@ export const WithHolidays: Story = {
 
 export const WithMondayFirst: Story = {
     render: () => <DatePicker withMondayFirst />,
+}
+
+export const WithRange: Story = {
+    render: () => <DatePicker withRange />,
+}
+
+export const WithTodos: Story = {
+    render: () => <DatePicker withTodos />,
 }

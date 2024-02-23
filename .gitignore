@@ -3,3 +3,5 @@ node_modules
 .DS_Store
 dist
 storybook-static
+.yarnrc
+.yarnrc.yml
