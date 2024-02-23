@@ -1,14 +1,15 @@
-import { ComponentType, useEffect, useState } from 'react'
-import { ICalendarProps } from '@components/Calendar/interfaces'
+import { ComponentType, useState } from 'react'
 import { Modal } from '@components/Modal'
 import { ITodo } from './interfaces'
 import { v4 as uuidv4 } from 'uuid'
-import { useClickOutside } from '../hooks/useClickOutside'
+import { ICalendarProps } from '@components/Calendar/interfaces'
 type TodosObject = {
     [key: string]: ITodo[]
 }
 
-export const withTodos = <P extends Object>(Component: ComponentType<P>) => {
+export const WithTodos = (
+    Component: ComponentType<ICalendarProps>
+): ComponentType<ICalendarProps> => {
     const [isShowModal, setIsShowModal] = useState(false)
     const [todos, setTodos] = useState<TodosObject>(
         JSON.parse(localStorage.getItem('todos') || '{}')
@@ -16,11 +17,11 @@ export const withTodos = <P extends Object>(Component: ComponentType<P>) => {
 
     const [currentDate, setCurrentDate] = useState('')
 
-    const handleCloseModal = () => {
+    const handleCloseModal = (): void => {
         setIsShowModal(false)
     }
 
-    const toggleTodoModal = (val: string) => {
+    const toggleTodoModal = (val: string): void => {
         setCurrentDate(val)
         if (!todos[val]) {
             setTodos({ ...todos, [val]: [] })
@@ -28,7 +29,7 @@ export const withTodos = <P extends Object>(Component: ComponentType<P>) => {
 
         setIsShowModal(true)
     }
-    const addTodo = (title: string) => {
+    const addTodo = (title: string): void => {
         const todo = {
             id: uuidv4(),
             title,
@@ -40,7 +41,7 @@ export const withTodos = <P extends Object>(Component: ComponentType<P>) => {
         localStorage.setItem('todos', JSON.stringify(currentTodos))
     }
 
-    const removeTodo = (id: string) => {
+    const removeTodo = (id: string): void => {
         const currentTodos = { ...todos }
         const newTodos = currentTodos[currentDate].filter(
             (todo) => todo.id !== id
@@ -49,20 +50,16 @@ export const withTodos = <P extends Object>(Component: ComponentType<P>) => {
         setTodos({ ...todos, [currentDate]: newTodos })
     }
 
-    let activeTodoDays: string[] = []
-    for (let key in todos) {
+    const activeTodoDays: string[] = []
+    for (const key in todos) {
         if (todos[key].length) {
             activeTodoDays.push(key)
         }
     }
-
-    
-
-    return (props: P) => {
+    return (props: ICalendarProps) => {
         return (
             <>
                 <Modal
-                    
                     isOpen={isShowModal}
                     onSubmit={addTodo}
                     onClose={handleCloseModal}

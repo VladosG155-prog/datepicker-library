@@ -2,8 +2,8 @@ export const compareDate = (
     first: string,
     second: string,
     comparator?: '=' | '>' | '<'
-) => {
-    if (!first || !second) return
+): boolean => {
+    if (!first || !second) return false
     const [dayFirst, monthFirst, yearFirst] = first.split('/').map(Number)
 
     const [daySecond, monthSecond, yearSecond] = second.split('/').map(Number)

@@ -21,7 +21,11 @@ export const CalendarGrid: FC<ICalendarGridProps> = (props) => {
         maxDate,
     } = props
 
-    const handleCellClick = (day: number, month: number, year: number) => {
+    const handleCellClick = (
+        day: number,
+        month: number,
+        year: number
+    ): void => {
         if (isRange) {
             changeWithRange(transformDateToInput(day, month, year))
         } else {
@@ -57,20 +61,22 @@ export const CalendarGrid: FC<ICalendarGridProps> = (props) => {
                     year
                 )
 
+                const dayOfWeek = new Date(year, month, day).getDay()
+
                 return (
                     <DayCell
+                        dayOfWeek={dayOfWeek}
                         day={day}
                         key={`${day}-${month}-${year}`}
                         isPrevMonth={month === currentMonth}
                         isDisabledByMaxMin={disabledByMaxMinValues}
                         isHoliday={isHoliday && isHoliday(day, month)}
-                        onClick={() => {
-                            handleCellClick(day, month, year)
-                            toggleTodoModal && toggleTodoModal(stringDate)
-                        }}
+                        onClick={() => handleCellClick(day, month, year)}
+                        onAddTodo={() => toggleTodoModal(stringDate)}
                         isActiveDay={activeDate === stringDate}
                         isActiveRangeDay={isActiveDayRange}
                         isActiveTodoDay={!!activeTodoDays?.includes(stringDate)}
+                        isShowTodo={!!activeTodoDays}
                     />
                 )
             })}

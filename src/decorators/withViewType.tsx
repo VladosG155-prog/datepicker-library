@@ -1,4 +1,4 @@
-import { ComponentType, FC, useMemo, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { generateCalendarDays } from '../utils/generateDays'
 import { monthNames } from '../constants/month'
 
@@ -9,20 +9,13 @@ import { VIEW_TYPE } from '@constants/enums'
 import { isValidDate } from '@utils/isValidDate'
 import { transformDateToInput } from '@utils/transformDate'
 
-interface IWithViewTypeProps {
-    days: { day: number; month: number; year: number }[]
-    handleClickNext?: () => void
-    handleClickPrev?: () => void
-    currentFullDate?: string
-    currentMonth?: number
-}
-
 const defaultDate = new Date(Date.now())
 const stringDefaultDate = transformDateToInput(
     defaultDate.getDate(),
     defaultDate.getMonth(),
     defaultDate.getFullYear()
 )
+
 export const withViewType = (Component: FC<ICalendarProps>) => {
     return (props: ICalendarProps) => {
         const {
@@ -35,9 +28,7 @@ export const withViewType = (Component: FC<ICalendarProps>) => {
             ? activeDate.split('-')[1]
             : activeDate.split('-')[0]
 
-        const [_, selectedMonth, selectedYear] = rangeDate
-            .split('/')
-            .map(Number)
+        const [, selectedMonth, selectedYear] = rangeDate.split('/').map(Number)
 
         const selectedDate = new Date(selectedYear, selectedMonth - 1)
         const [currentDate, setCurrentDate] = useState(
@@ -80,7 +71,7 @@ export const withViewType = (Component: FC<ICalendarProps>) => {
                     viewType,
                     isMondayFirst
                 ),
-            [viewType, isMondayFirst, currentDate]
+            [viewType, isMondayFirst, currentMonth, currentYear, currentDate]
         )
 
         let currentFullDate = ''

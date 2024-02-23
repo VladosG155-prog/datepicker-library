@@ -1,3 +1,4 @@
+import { isValidDate } from './isValidDate'
 import { transformDateToInput } from './transformDate'
 
 export const validateInput = (
@@ -6,9 +7,18 @@ export const validateInput = (
     maxDate?: Date
 ): { valid: boolean; message?: string } => {
     const [day, selectedMonth, selectedYear] = value.split('/').map(Number)
-    if (!minDate || !maxDate || !value.length) return { valid: false }
+    if (!value.length) return { valid: false }
 
     const dateValue = new Date(selectedYear, selectedMonth - 1, day)
+
+    if (!isValidDate(value) || selectedMonth - 1 !== dateValue.getMonth()) {
+        return {
+            valid: false,
+            message: 'Please enter a valid date. DD/MM/YYYY',
+        }
+    }
+
+    if (!minDate || !maxDate) return { valid: false }
 
     const minDateValue = new Date(minDate)
     const maxDateValue = new Date(maxDate)
@@ -23,13 +33,6 @@ export const validateInput = (
         minDateValue.getMonth(),
         minDateValue.getFullYear()
     )
-
-    if (isNaN(dateValue.getTime())) {
-        return {
-            valid: false,
-            message: 'Please enter a valid date. DD/MM/YYYY',
-        }
-    }
 
     if (dateValue < minDateValue) {
         return {

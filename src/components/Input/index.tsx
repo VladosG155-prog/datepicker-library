@@ -13,7 +13,7 @@ interface IInputProps {
 
 export const Input: FC<IInputProps> = memo((props) => {
     const { value = '', onChange, onClick, maxValue, minValue } = props
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
         const inputDate = e.target.value
 
         const formattedDate = inputDate
@@ -24,7 +24,7 @@ export const Input: FC<IInputProps> = memo((props) => {
         onChange(formattedDate)
     }
 
-    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>): void => {
         if (e.key === 'Backspace') {
             e.preventDefault()
             const newDate = (value as string).slice(0, -1)
@@ -32,7 +32,7 @@ export const Input: FC<IInputProps> = memo((props) => {
         }
     }
 
-    const handleClearInput = () => {
+    const handleClearInput = (): void => {
         onChange('')
     }
 
@@ -42,10 +42,7 @@ export const Input: FC<IInputProps> = memo((props) => {
         <>
             {!valid && <span className="text-red-500 text-sm">{message}</span>}
             <div className="w-[250px] relative mb-5">
-                <i
-                    onClick={onClick}
-                    className="absolute top-4 left-4 cursor-pointer "
-                >
+                <i onClick={onClick} className="absolute top-4 left-4 cursor-pointer ">
                     <CalendarIcon className=" hover:fill-gray-800 fill-slate-400" />
                 </i>
                 <input
@@ -57,10 +54,7 @@ export const Input: FC<IInputProps> = memo((props) => {
                     className="border-gray-100 w-full border-2 rounded-lg py-2.5 pl-9 pr-3.5 font-normal text-gray-default"
                 />
                 {value.length > 0 && (
-                    <i
-                        onClick={handleClearInput}
-                        className="absolute top-4 right-4 cursor-pointer"
-                    >
+                    <i onClick={handleClearInput} className="absolute top-4 right-4 cursor-pointer">
                         <CloseIcon />
                     </i>
                 )}

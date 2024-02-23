@@ -1,9 +1,10 @@
-import { FC, useCallback, useRef, useState } from 'react'
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
 import Calendar from '@components/Calendar'
 import { Input } from '@components/Input'
 import { IDatePickerProps } from './interfaces'
 import { VIEW_TYPE } from '@constants/enums'
 import { useClickOutside } from '../../hooks/useClickOutside'
+import { isValidDate } from '@utils/isValidDate'
 
 const DatePicker: FC<IDatePickerProps> = ({
     withHolidays = false,
@@ -20,24 +21,33 @@ const DatePicker: FC<IDatePickerProps> = ({
 
     const [isOpenCalendar, setIsOpenCalendar] = useState(false)
 
-    const handleClickInput = () => {
+    const handleClickInput = (): void => {
         setIsOpenCalendar(true)
     }
 
-    const handleChangeInput = useCallback((val: string) => {
-        if (withRange) {
-            setRange((prev) => {
-                return {
-                    ...prev,
-                    to: val,
-                }
-            })
-        } else {
-            setDate(val)
+    useEffect(() => {
+        if (isValidDate(date)) {
+            setIsOpenCalendar(true)
         }
-    }, [])
+    }, [date])
 
-    const handleChangeSecondInput = useCallback((val: string) => {
+    const handleChangeInput = useCallback(
+        (val: string): void => {
+            if (withRange) {
+                setRange((prev) => {
+                    return {
+                        ...prev,
+                        to: val,
+                    }
+                })
+            } else {
+                setDate(val)
+            }
+        },
+        [withRange]
+    )
+
+    const handleChangeSecondInput = useCallback((val: string): void => {
         setRange((prev) => {
             return {
                 ...prev,
@@ -46,7 +56,7 @@ const DatePicker: FC<IDatePickerProps> = ({
         })
     }, [])
 
-    const handleSelectDate = (val: string) => {
+    const handleSelectDate = (val: string): void => {
         if (withRange) {
             const [from, to] = val.split('-')
             setRange({ from, to: to })
@@ -58,7 +68,14 @@ const DatePicker: FC<IDatePickerProps> = ({
     const rangeDateToString =
         range.from || range.to ? `${range.from}-${range.to}` : ''
 
-    useClickOutside(ref, () => setIsOpenCalendar(false))
+    useClickOutside(ref, (e: MouseEvent | TouchEvent) => {
+        if (
+            e.target instanceof Element &&
+            !e.target.closest('[data-id="modal"]')
+        ) {
+            setIsOpenCalendar(false)
+        }
+    })
 
     return (
         <div ref={ref}>
