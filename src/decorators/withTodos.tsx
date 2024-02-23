@@ -1,80 +1,96 @@
-import { ComponentType, useEffect, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
+import { generateCalendarDays } from '../utils/generateDays'
+import { monthNames } from '../constants/month'
+
+const nowDate = new Date(Date.now())
+
 import { ICalendarProps } from '@components/Calendar/interfaces'
-import { Modal } from '@components/Modal'
-import { ITodo } from './interfaces'
-import { v4 as uuidv4 } from 'uuid'
-import { useClickOutside } from '../hooks/useClickOutside'
-type TodosObject = {
-    [key: string]: ITodo[]
-}
+import { VIEW_TYPE } from '@constants/enums'
+import { isValidDate } from '@utils/isValidDate'
+import { transformDateToInput } from '@utils/transformDate'
 
-export const withTodos = <P extends Object>(Component: ComponentType<P>) => {
-    const [isShowModal, setIsShowModal] = useState(false)
-    const [todos, setTodos] = useState<TodosObject>(
-        JSON.parse(localStorage.getItem('todos') || '{}')
-    )
+const defaultDate = new Date(Date.now())
+const stringDefaultDate = transformDateToInput(
+    defaultDate.getDate(),
+    defaultDate.getMonth(),
+    defaultDate.getFullYear()
+)
 
-    const [currentDate, setCurrentDate] = useState('')
+export const withViewType = (Component: FC<ICalendarProps>) => {
+    return (props: ICalendarProps) => {
+        const {
+            activeDate = stringDefaultDate,
+            viewType,
+            isMondayFirst,
+        } = props
 
-    const handleCloseModal = () => {
-        setIsShowModal(false)
-    }
+        const rangeDate = activeDate.split('-')[1]
+            ? activeDate.split('-')[1]
+            : activeDate.split('-')[0]
 
-    const toggleTodoModal = (val: string) => {
-        setCurrentDate(val)
-        if (!todos[val]) {
-            setTodos({ ...todos, [val]: [] })
-        }
+        const [, selectedMonth, selectedYear] = rangeDate.split('/').map(Number)
 
-        setIsShowModal(true)
-    }
-    const addTodo = (title: string) => {
-        const todo = {
-            id: uuidv4(),
-            title,
-        }
-
-        const currentTodos = { ...todos }
-        currentTodos[currentDate].push(todo)
-        setTodos(currentTodos)
-        localStorage.setItem('todos', JSON.stringify(currentTodos))
-    }
-
-    const removeTodo = (id: string) => {
-        const currentTodos = { ...todos }
-        const newTodos = currentTodos[currentDate].filter(
-            (todo) => todo.id !== id
+        const selectedDate = new Date(selectedYear, selectedMonth - 1)
+        const [currentDate, setCurrentDate] = useState(
+            isValidDate(rangeDate) ? selectedDate : nowDate
         )
 
-        setTodos({ ...todos, [currentDate]: newTodos })
-    }
+        const currentYear = currentDate.getFullYear()
 
-    let activeTodoDays: string[] = []
-    for (let key in todos) {
-        if (todos[key].length) {
-            activeTodoDays.push(key)
+        const currentMonth = currentDate.getMonth()
+
+        const handleClickControl = (increment: number): void => {
+            const nextDate = new Date(currentDate.getTime())
+            switch (viewType) {
+                case VIEW_TYPE.YEAR:
+                    nextDate.setFullYear(nextDate.getFullYear() + increment)
+                    break
+                case VIEW_TYPE.WEEK:
+                    nextDate.setDate(nextDate.getDate() + increment * 7)
+                    break
+                default:
+                    nextDate.setMonth(nextDate.getMonth() + increment)
+                    break
+            }
+            setCurrentDate(nextDate)
         }
-    }
 
-    
+        const handleClickPrev = (): void => {
+            handleClickControl(-1)
+        }
+        const handleClickNext = (): void => {
+            handleClickControl(1)
+        }
 
-    return (props: P) => {
+        const days = useMemo(
+            () =>
+                generateCalendarDays(
+                    currentYear,
+                    currentMonth,
+                    currentDate.getDate(),
+                    viewType,
+                    isMondayFirst
+                ),
+            [viewType, isMondayFirst, currentMonth, currentYear, currentDate]
+        )
+
+        let currentFullDate = ''
+
+        if (viewType === VIEW_TYPE.YEAR) {
+            currentFullDate = `${currentYear}`
+        } else {
+            currentFullDate = `${monthNames[currentMonth]} ${currentYear}`
+        }
+
         return (
-            <>
-                <Modal
-                    
-                    isOpen={isShowModal}
-                    onSubmit={addTodo}
-                    onClose={handleCloseModal}
-                    todos={todos[currentDate]}
-                    onRemove={removeTodo}
-                />
-                <Component
-                    {...props}
-                    toggleTodoModal={toggleTodoModal}
-                    activeTodoDays={activeTodoDays}
-                />
-            </>
+            <Component
+                {...props}
+                days={days}
+                currentMonth={currentMonth}
+                handleClickNext={handleClickNext}
+                handleClickPrev={handleClickPrev}
+                currentFullDate={currentFullDate}
+            />
         )
     }
 }
