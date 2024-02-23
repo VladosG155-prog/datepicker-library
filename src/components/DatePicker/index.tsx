@@ -14,7 +14,7 @@ export const DatePicker: FC<IDatePickerProps> = ({
     viewType = VIEW_TYPE.MONTH,
     maxDate,
     minDate,
-    onChange,
+    onChange = () => null,
 }) => {
     const [date, setDate] = useState('')
     const ref = useRef(null)

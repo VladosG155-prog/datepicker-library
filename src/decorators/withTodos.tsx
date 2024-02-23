@@ -42,6 +42,7 @@ export const withTodos = <P extends ICalendarProps>(Component: FC<P>): FC<P> => 
             const newTodos = currentTodos[currentDate].filter((todo) => todo.id !== id)
 
             setTodos({ ...todos, [currentDate]: newTodos })
+            localStorage.setItem('todos', JSON.stringify(todos))
         }
 
         const activeTodoDays: string[] = []
