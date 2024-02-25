@@ -5,6 +5,7 @@ import { IDatePickerProps } from './interfaces'
 import { VIEW_TYPE } from '@constants/enums'
 import { useClickOutside } from '../../hooks/useClickOutside'
 import { isValidDate } from '@utils/isValidDate'
+import { ErrorBoundary } from '@components/ErrorBoundary'
 
 export const DatePicker: FC<IDatePickerProps> = ({
     withHolidays = false,
@@ -15,10 +16,15 @@ export const DatePicker: FC<IDatePickerProps> = ({
     maxDate,
     minDate,
     onChange = () => null,
+    value = '',
 }) => {
-    const [date, setDate] = useState('')
+    const [date, setDate] = useState(value)
     const ref = useRef(null)
-    const [range, setRange] = useState({ from: '', to: '' })
+
+    const [range, setRange] = useState({
+        from: value.split('-')[0],
+        to: value.split('-')[1],
+    })
 
     const [isOpenCalendar, setIsOpenCalendar] = useState(false)
 
@@ -27,7 +33,8 @@ export const DatePicker: FC<IDatePickerProps> = ({
     }
 
     useEffect(() => {
-        if (range.to && range.from) {
+        const [from, to] = value.split('-')
+        if (range.to && range.from && range.from !== from && range.to != to) {
             onChange(`${range.from}-${range.to}`)
         }
     }, [range])
@@ -82,36 +89,38 @@ export const DatePicker: FC<IDatePickerProps> = ({
     })
 
     return (
-        <div ref={ref}>
-            {withRange && (
+        <ErrorBoundary>
+            <div ref={ref}>
+                {withRange && (
+                    <Input
+                        onClick={handleClickInput}
+                        onChange={handleChangeSecondInput}
+                        value={range.from}
+                        maxValue={maxDate}
+                        minValue={minDate}
+                    />
+                )}
                 <Input
                     onClick={handleClickInput}
-                    onChange={handleChangeSecondInput}
-                    value={range.from}
+                    onChange={handleChangeInput}
+                    value={withRange ? range.to : date}
                     maxValue={maxDate}
                     minValue={minDate}
                 />
-            )}
-            <Input
-                onClick={handleClickInput}
-                onChange={handleChangeInput}
-                value={withRange ? range.to : date}
-                maxValue={maxDate}
-                minValue={minDate}
-            />
-            {isOpenCalendar && (
-                <Calendar
-                    withHolidays={withHolidays}
-                    withMondayFirst={withMondayFirst}
-                    withRange={withRange}
-                    withTodos={withTodos}
-                    maxDate={maxDate}
-                    minDate={minDate}
-                    activeDate={withRange ? rangeDateToString : date}
-                    viewType={viewType}
-                    onSelectDay={handleSelectDate}
-                />
-            )}
-        </div>
+                {isOpenCalendar && (
+                    <Calendar
+                        withHolidays={withHolidays}
+                        withMondayFirst={withMondayFirst}
+                        withRange={withRange}
+                        withTodos={withTodos}
+                        maxDate={maxDate}
+                        minDate={minDate}
+                        activeDate={withRange ? rangeDateToString : date}
+                        viewType={viewType}
+                        onSelectDay={handleSelectDate}
+                    />
+                )}
+            </div>
+        </ErrorBoundary>
     )
 }
