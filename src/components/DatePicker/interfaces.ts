@@ -8,5 +8,6 @@ export interface IDatePickerProps {
     viewType?: VIEW_TYPE
     maxDate?: Date
     minDate?: Date
-    onChange: (val: string) => void
+    value?: string
+    onChange?: (val: string) => void
 }

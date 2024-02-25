@@ -15,6 +15,13 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
+    argTypes: {
+        value: {
+            argTypes: {
+                label: { control: 'date' },
+            },
+        },
+    },
     args: {
         withHolidays: false,
         withMondayFirst: false,

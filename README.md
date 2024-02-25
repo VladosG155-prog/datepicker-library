@@ -1,111 +1,51 @@
-# Tестовое задание библиотека Modsen DatePicker
+# Getting Started
 
-## Содержание
+### 1. Add `datepicker-library` to your dependencies:
 
--   [Техническое задание](#Техническое-задание)
--   [Используемые технологии](#Используемые-технологии)
--   [Структура проекта](#Структура-проекта)
--   [Тестирование](#Тестирование)
--   [Как начать](#Как-начать)
--   [Полезные ссылки](#Полезные-ссылки)
+```bash
+npm install @vladosg155/datepicker-library # with npm
+pnpm install @vladosg155/datepicker-library # with pnpm
+yarn add @vladosg155/datepicker-library # with yarn
+```
 
-## Техническое задание
+#### 2. When importing, include the DayPicker CSS in your component:
 
-Необходимо реализовать библиотеку Javascript - **_DatePicker_**, для работы с различными видами календаря.
-Цель состоит в том, чтобы создать базовую библиотеку, которую можно настраивать и расширять.
+```bash
 
-#### Необходимый функционал:
+import {DatePicker} from @vladosg155/datepicker-library
+import  "@vladosg155/datepicker-library/dist/index.css"
 
--   Просмотр календаря;
--   Выбор диапазона для календаря;
--   Дефолтный календарь с заранее установленным диапазоном;
--   Возможность выбора начала недели(с понедельника или воскресенья);
--   Выбор вида календаря (по неделям, месяцам и т.д.);
--   Реализовать возможность при клике на определенный день добавлять список задач и
-    сохранять их в localStorage;
--   Возможность переключения на предыдущий(ую)/следующий(ую) неделю/месяц/год;
--   Возможность выбора максимальной даты календаря;
--   Возможность выбора минимальной даты для календаря;
--   Возможность скрывать/показывать выходные дни и выделять праздничные дни другим цветом;
--   Возможность перейти в календаре на введенную пользователем дату;
--   Стилизация календаря.
+function  Component()  {
+return  <DayPicker  />;
+}
+```
 
-#### Дополнительный функционал:
+#### 3. Props
 
--   Развернуть приложение на хостинге (heroku, vercel);
--   Настроить CI/CD, используя [GitHub Actions](https://github.com/features/actions);
--   Собрать проект с нуля(с настройками всех конфигов: rollup, eslint, prettier, husky).
+withRange?: // Enables selecting date range
+viewType?: // Type of calendar view ('month', 'year', 'week') (def: 'month)
+onChange={(val: string)=>val} // Handler for selected date change
+withTodos?: // Enables displaying todos on the calendar
+withMondayFirst?:// Start of the week on Monday
+activeDate?: // start selectedDate(format: DD/MM/YYYY) - default datepicker
+DD/MM/YYYY-DD/MM/YYYY - range datepicker
+maxDate?: Date // max date for datepicker
+minDate?: Date // min date for datepicker
 
-#### Пример графического представления:
+```bash
+import {DatePicker} from @vladosg155/datepicker-library
+import  "@vladosg155/datepicker-library/dist/index.css"
 
-Ссылка на макет: [Макет "DatePicker"](https://www.figma.com/file/PGg4P38QaPjUzasxC2GSkv/Modsen-Datepicker?node-id=0%3A1&t=dWZj8oM41qBje0bv-0).
-
-#### Также проект предполагает:
-
--   Придерживаться требований по написанию и организации кода react приложения. Ссылка на требования: [Требования к тестовому заданию](https://github.com/annaprystavka/requirements);
-
--   Разделить библиотеку на два основных компонента: представления и логики. Для реализации логики приложения необходимо использовать порождающий паттерн программирования **_"Декоратор"_**, который позволяет динамически добавлять объектам новую функциональность, оборачивая их в полезные «обёртки» (см. подробнее [паттерн Декоратор](https://refactoring.guru/ru/design-patterns/decorator)). При помощи паттерна создать сервисный класс, в котором вы будете задавать конфигурацию и создавать календарь;
-
--   Настроить конфигурации **_babel_**, **_eslint_**, **_prettier_**;
-
--   Подключить и настроить бандлер **_Rollup_** для сборки проекта в библиотеку;
-
--   Подключить и настроить **_Storybook_** для проверки работоспособности вашей библиотеки;
-
--   Добавить обработку ошибок через паттерн **_Error Boundaries_**;
-
--   Добавить проверку типов в React компонентах, передаваемых параметров и подобных объектов;
-
--   Использовать алиасы для импортирования файлов;
-
--   В приложении допускается использование языка typescript;
-
--   Нельзя использовать какие-либо сторонние библиотеки.
-
-## Используемые технологии
-
-### Для react
-
--   **_node.js_** - программная платформа, основанная на движке V8 (транслирующем JavaScript в машинный код);
--   **_babel_** - транспайлер, преобразующий код из одного стандарта в другой;
--   **_eslint_** - линтер для JavaScript кода;
--   **_yarn_** - менеджер пакетов;
--   **_rollup_** - сборщик ES-модулей;
--   **_storybook_** - инструмент, используемый для разработки компонентов пользовательского интерфейса в изоляции;
--   **_react_** - JavaScript-библиотека для создания пользовательских интерфейсов;
--   **_prop-types_** - набор валидаторов, которые могут быть использованы для проверки получаемых данных;
--   **_styled-components_** - система стилизации react компонентов;
--   **_jest_** — интеграционное тестирование (rtl) + unit-тестирование.
-
-### Для react native
-
-Will be soon...
-
-## Структура проекта
-
-[Структура проекта](https://github.com/mkrivel/structure)
-
-## Тестирование
-
-Реализовать e2e тестирование c полным покрытием функционала приложения:
-
--   Сервис для конфигурации DatePicker-компонента;
--   Графическое (компонент модуля и т.д.).
-
-## Полезные ссылки
-
-[React](https://reactjs.org/docs/getting-started.html)
-
-[Rollup](https://rollupjs.org/guide/en/)
-
-[Storybook](https://storybook.js.org/docs/basics/introduction/)
-
-[Eslint](https://eslint.org/docs/user-guide/configuring)
-
-[Babel](https://babeljs.io/docs/en/configuration)
-
-[Тестирование Jest](https://jestjs.io/ru/docs/getting-started)
-
-[Styled-components](https://www.styled-components.com/docs)
-
-[Husky](https://dev.to/ivadyhabimana/setup-eslint-prettier-and-husky-in-a-node-project-a-step-by-step-guide-946)
+function  Component()  {
+return  <DayPicker
+		    withRange
+			withTodos
+			withMondayFirst
+			viewType='month'
+			activeDate='12/02/2024/
+			maxDate={new Date("DATE")}
+			minDate={new Date("DATE")}
+			onChange={(val)=>log(val)}
+ />;
+}
+```
