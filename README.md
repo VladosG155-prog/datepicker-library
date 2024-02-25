@@ -22,15 +22,15 @@ return  <DayPicker  />;
 
 #### 3. Props
 
-withRange?: // Enables selecting date range
-viewType?: // Type of calendar view ('month', 'year', 'week') (def: 'month)
-onChange={(val: string)=>val} // Handler for selected date change
-withTodos?: // Enables displaying todos on the calendar
-withMondayFirst?:// Start of the week on Monday
-activeDate?: // start selectedDate(format: DD/MM/YYYY) - default datepicker
-DD/MM/YYYY-DD/MM/YYYY - range datepicker
-maxDate?: Date // max date for datepicker
-minDate?: Date // min date for datepicker
+-   withRange?: // Enables selecting date range
+-   viewType?: // Type of calendar view ('month', 'year', 'week') (def: 'month)
+-   onChange={(val: string)=>val} // Handler for selected date change
+-   withTodos?: // Enables displaying todos on the calendar
+-   withMondayFirst?:// Start of the week on Monday
+-   activeDate?: // start selectedDate(format: DD/MM/YYYY) - default datepicker
+-   DD/MM/YYYY-DD/MM/YYYY - range datepicker
+-   maxDate?: Date // max date for datepicker
+-   minDate?: Date // min date for datepicker
 
 ```bash
 import {DatePicker} from @vladosg155/datepicker-library
