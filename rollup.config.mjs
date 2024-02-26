@@ -5,6 +5,7 @@ import svgr from '@svgr/rollup'
 import babel from '@rollup/plugin-babel'
 import postcss from 'rollup-plugin-postcss'
 import url from '@rollup/plugin-url'
+import terser from '@rollup/plugin-terser'
 import alias from '@rollup/plugin-alias'
 import dts from 'rollup-plugin-dts'
 import path from 'path'
@@ -63,39 +64,23 @@ export default [
                     },
                     {
                         find: '@components',
-                        replacement: path.resolve(
-                            projectRootDir,
-                            'src',
-                            'components'
-                        ),
+                        replacement: path.resolve(projectRootDir, 'src', 'components'),
                     },
                     {
                         find: '@assets',
-                        replacement: path.resolve(
-                            projectRootDir,
-                            'src',
-                            'assets'
-                        ),
+                        replacement: path.resolve(projectRootDir, 'src', 'assets'),
                     },
                     {
                         find: '@constants',
-                        replacement: path.resolve(
-                            projectRootDir,
-                            'src',
-                            'constants'
-                        ),
+                        replacement: path.resolve(projectRootDir, 'src', 'constants'),
                     },
                     {
                         find: '@utils',
-                        replacement: path.resolve(
-                            projectRootDir,
-                            'src',
-                            'utils'
-                        ),
+                        replacement: path.resolve(projectRootDir, 'src', 'utils'),
                     },
                 ],
             }),
-            {},
+            terser(),
         ],
         external: ['react', 'react-dom'],
     },
