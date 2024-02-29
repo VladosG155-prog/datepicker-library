@@ -3,7 +3,7 @@ import Calendar from '@components/Calendar'
 import { Input } from '@components/Input'
 import { IDatePickerProps } from './interfaces'
 import { VIEW_TYPE } from '@constants/enums'
-import { useClickOutside } from '../../hooks/useClickOutside'
+import { useClickOutside } from '@hooks/useClickOutside'
 import { isValidDate } from '@utils/isValidDate'
 import { ErrorBoundary } from '@components/ErrorBoundary'
 
@@ -48,16 +48,7 @@ export const DatePicker: FC<IDatePickerProps> = ({
 
     const handleChangeInput = useCallback(
         (val: string): void => {
-            if (withRange) {
-                setRange((prev) => {
-                    return {
-                        ...prev,
-                        to: val,
-                    }
-                })
-            } else {
-                setDate(val)
-            }
+            withRange ? setRange((prev) => ({ ...prev, to: val })) : setDate(val)
         },
         [withRange]
     )
@@ -71,14 +62,17 @@ export const DatePicker: FC<IDatePickerProps> = ({
         })
     }, [])
 
-    const handleSelectDate = (val: string): void => {
-        if (withRange) {
-            const [from, to] = val.split('-')
-            setRange({ from, to: to })
-        } else {
-            setDate(val)
-        }
-    }
+    const handleSelectDate = useCallback(
+        (val: string): void => {
+            if (withRange) {
+                const [from, to] = val.split('-')
+                setRange({ from, to })
+            } else {
+                setDate(val)
+            }
+        },
+        [withRange]
+    )
 
     const rangeDateToString = range.from || range.to ? `${range.from}-${range.to}` : ''
 

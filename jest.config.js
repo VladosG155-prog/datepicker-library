@@ -5,6 +5,8 @@ module.exports = {
         '^@assets/(.*)$': '<rootDir>/src/assets/$1',
         '^@constants/(.*)$': '<rootDir>/src/constants/$1',
         '^@components/(.*)$': '<rootDir>/src/components/$1',
+        '^@decorators/(.*)$': '<rootDir>/src/decorators/$1',
+        '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
     },
 
     transform: {

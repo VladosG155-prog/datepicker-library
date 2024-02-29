@@ -1,7 +1,6 @@
-import { ITodo } from '../../decorators/interfaces'
+import { ITodo } from '@decorators/interfaces/ITodo'
 
-export interface IModalProps {
-    isOpen: boolean
+export interface ITodoModalProps {
     onClose: () => void
     onSubmit: (title: string) => void
     todos: ITodo[]

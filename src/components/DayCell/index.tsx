@@ -36,7 +36,7 @@ export const DayCell: FC<IDayCellProps> = memo(
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}
                     className={cn(
-                        'w-8 h-8 flex relative justify-center p-5 text-sm items-center font-semibold rounded-lg text-center text-gray-default  ',
+                        'w-8 h-8 flex relative justify-center p-5 text-sm items-center font-semibold rounded-lg text-center text-gray-default',
                         {
                             'text-red-400': isHoliday,
                             'text-gray-disabled': !isPrevMonth || isDisabledByMaxMin,

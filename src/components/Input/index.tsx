@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, KeyboardEvent, memo } from 'react'
-import { ReactComponent as CalendarIcon } from '../../assets/Calendar.svg'
-import { ReactComponent as CloseIcon } from '../../assets/Clear.svg'
+import { ReactComponent as CalendarIcon } from '@assets/Calendar.svg'
+import { ReactComponent as CloseIcon } from '@assets/Clear.svg'
 import { validateInput } from '@utils/validateInput'
 import { formatDate } from './config'
 

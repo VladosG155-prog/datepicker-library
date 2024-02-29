@@ -21,7 +21,9 @@
             "@constants/*": ["src/constants/*"],
             "@store/*": ["src/store/*"],
             "@assets/*": ["src/assets/*"],
-            "@pages/*": ["src/pages/*"]
+            "@pages/*": ["src/pages/*"],
+            "@decorators/*": ["src/decorators/*"],
+            "@hooks/*": ["src/hooks/*"]
         }
     },
     "include": ["src/@types/index.d.ts", "src"],

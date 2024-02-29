@@ -35,12 +35,7 @@ export const withRange = <P extends ICalendarProps>(Component: FC<P>) => {
             })
         }
         return (
-            <Component
-                {...props}
-                isRange={true}
-                changeWithRange={changeWithRange}
-                rangeDate={rangeDate}
-            />
+            <Component {...props} isRange changeWithRange={changeWithRange} rangeDate={rangeDate} />
         )
     }
 }

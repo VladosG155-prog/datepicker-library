@@ -1,7 +1,7 @@
-import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
-import { Modal } from '.'
-import { ITodo } from 'src/decorators/interfaces'
+import { TodoModal } from '.'
+import { ITodo } from '@decorators/interfaces/ITodo'
+import { ModalWrapper } from '@components/ModalWrapper'
 
 describe('Modal Component', () => {
     test('renders without crashing when isOpen is true', () => {
@@ -9,13 +9,14 @@ describe('Modal Component', () => {
         const onSubmit = jest.fn()
         const todos: ITodo[] = []
         const { getByTestId } = render(
-            <Modal
-                isOpen={true}
-                onClose={onClose}
-                onRemove={jest.fn()}
-                onSubmit={onSubmit}
-                todos={todos}
-            />
+            <ModalWrapper onClose={jest.fn()} isOpen>
+                <TodoModal
+                    onClose={onClose}
+                    onRemove={jest.fn()}
+                    onSubmit={onSubmit}
+                    todos={todos}
+                />
+            </ModalWrapper>
         )
         const modalElement = getByTestId('modal')
         expect(modalElement).toBeInTheDocument()
@@ -26,13 +27,14 @@ describe('Modal Component', () => {
         const onSubmit = jest.fn()
         const todos: ITodo[] = []
         const { queryByTestId } = render(
-            <Modal
-                isOpen={false}
-                onRemove={jest.fn()}
-                onClose={onClose}
-                onSubmit={onSubmit}
-                todos={todos}
-            />
+            <ModalWrapper onClose={jest.fn()} isOpen={false}>
+                <TodoModal
+                    onClose={onClose}
+                    onRemove={jest.fn()}
+                    onSubmit={onSubmit}
+                    todos={todos}
+                />
+            </ModalWrapper>
         )
         const modalElement = queryByTestId('modal')
         expect(modalElement).toBeNull()
@@ -43,13 +45,14 @@ describe('Modal Component', () => {
         const onSubmit = jest.fn()
         const todos: ITodo[] = []
         const { getByPlaceholderText, getByText } = render(
-            <Modal
-                onRemove={jest.fn()}
-                isOpen={true}
-                onClose={onClose}
-                onSubmit={onSubmit}
-                todos={todos}
-            />
+            <ModalWrapper onClose={jest.fn()} isOpen>
+                <TodoModal
+                    onRemove={jest.fn()}
+                    onClose={onClose}
+                    onSubmit={onSubmit}
+                    todos={todos}
+                />
+            </ModalWrapper>
         )
         const inputElement = getByPlaceholderText('Enter todo...')
         fireEvent.change(inputElement, { target: { value: 'New todo' } })
@@ -67,13 +70,14 @@ describe('Modal Component', () => {
             { id: '2', title: 'Todo 2' },
         ]
         const { getAllByTestId } = render(
-            <Modal
-                isOpen={true}
-                onClose={onClose}
-                onSubmit={onSubmit}
-                todos={todos}
-                onRemove={onRemove}
-            />
+            <ModalWrapper onClose={jest.fn()} isOpen>
+                <TodoModal
+                    onClose={onClose}
+                    onSubmit={onSubmit}
+                    todos={todos}
+                    onRemove={onRemove}
+                />
+            </ModalWrapper>
         )
         const removeButton = getAllByTestId('remove-todo')[0]
         fireEvent.click(removeButton)
