@@ -48,16 +48,7 @@ export const DatePicker: FC<IDatePickerProps> = ({
 
     const handleChangeInput = useCallback(
         (val: string): void => {
-            if (withRange) {
-                setRange((prev) => {
-                    return {
-                        ...prev,
-                        to: val,
-                    }
-                })
-            } else {
-                setDate(val)
-            }
+            withRange ? setRange((prev) => ({ ...prev, to: val })) : setDate(val)
         },
         [withRange]
     )
@@ -75,7 +66,7 @@ export const DatePicker: FC<IDatePickerProps> = ({
         (val: string): void => {
             if (withRange) {
                 const [from, to] = val.split('-')
-                setRange({ from, to: to })
+                setRange({ from, to })
             } else {
                 setDate(val)
             }

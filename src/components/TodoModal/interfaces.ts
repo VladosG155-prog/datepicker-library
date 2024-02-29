@@ -1,4 +1,4 @@
-import { ITodo } from '../../decorators/interfaces/ITodo'
+import { ITodo } from '@decorators/interfaces/ITodo'
 
 export interface ITodoModalProps {
     onClose: () => void
