@@ -6,27 +6,35 @@ export interface IDay {
     year: number
 }
 
-export interface ICalendarProps {
+export interface ICalendarHeader {
+    handleClickNext: () => void
+    handleClickPrev: () => void
+    currentFullDate: string
+}
+
+export interface ICalendarGrid {
+    isHoliday?: (day: number, month?: number) => boolean
+    onSelectDay: (val: string) => void
+    activeDate: string
+    currentMonth?: number
+    isRange?: boolean
+    dayNames: string[]
+    toggleTodoModal: (val: string) => void
+    changeWithRange: (val: string) => void
+    rangeValues?: { from: string; to: string }
+    activeTodoDays: string[] | null
+    maxDate: Date | null
+    minDate: Date | null
+}
+
+export interface ICalendarProps extends ICalendarGrid, ICalendarHeader {
     withHolidays?: boolean
     withMondayFirst?: boolean
     withRange?: boolean
     withTodos?: boolean
-    isHoliday?: (day: number, month?: number) => boolean
-    onSelectDay: (val: string) => void
-    activeDate: string
     isMondayFirst?: boolean
-    isRange?: boolean
     viewType?: VIEW_TYPE
     days: { [key: number]: IDay[] }
     currentDate: Date
-    currentMonth: number
-    handleClickNext: () => void
-    handleClickPrev: () => void
-    currentFullDate: string
-    toggleTodoModal: (val: string) => void
-    activeTodoDays?: string[]
-    maxDate?: Date
-    minDate?: Date
     rangeDate?: { from: string; to: string }
-    changeWithRange: (val: string) => void
 }

@@ -1,8 +1,9 @@
 import { FC, useState } from 'react'
-import { Modal } from '@components/Modal'
-import { ITodosObject } from './interfaces'
+import { TodoModal } from '@components/TodoModal'
+import { ITodosObject } from './interfaces/ITodo'
 import { v4 as uuidv4 } from 'uuid'
 import { ICalendarProps } from '@components/Calendar/interfaces'
+import { ModalWrapper } from '@components/ModalWrapper'
 
 export const withTodos = <P extends ICalendarProps>(Component: FC<P>): FC<P> => {
     return (props: P) => {
@@ -45,21 +46,17 @@ export const withTodos = <P extends ICalendarProps>(Component: FC<P>): FC<P> => 
             localStorage.setItem('todos', JSON.stringify(todos))
         }
 
-        const activeTodoDays: string[] = []
-        for (const key in todos) {
-            if (todos[key].length) {
-                activeTodoDays.push(key)
-            }
-        }
+        const activeTodoDays: string[] = Object.keys(todos).filter((key) => todos[key].length)
         return (
             <>
-                <Modal
-                    isOpen={isShowModal}
-                    onSubmit={addTodo}
-                    onClose={handleCloseModal}
-                    todos={todos[currentDate]}
-                    onRemove={removeTodo}
-                />
+                <ModalWrapper onClose={handleCloseModal} isOpen={isShowModal}>
+                    <TodoModal
+                        onSubmit={addTodo}
+                        onClose={handleCloseModal}
+                        todos={todos[currentDate]}
+                        onRemove={removeTodo}
+                    />
+                </ModalWrapper>
                 <Component
                     {...props}
                     toggleTodoModal={toggleTodoModal}

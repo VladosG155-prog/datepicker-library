@@ -4,4 +4,5 @@ node_modules
 dist
 storybook-static
 .yarnrc
-.yarnrc.yml
+.yarnrc
+yarn.lock

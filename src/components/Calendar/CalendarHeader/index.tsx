@@ -10,17 +10,11 @@ export const CalendarHeader: FC<ICalendarHeaderProps> = ({
 }) => {
     return (
         <div className="flex justify-between items-center px-6 py-3">
-            <button
-                onClick={handleClickPrev}
-                className="text-white focus:outline-none"
-            >
+            <button onClick={handleClickPrev} className="text-white focus:outline-none">
                 <ArrowRight />
             </button>
             <div className="text-black font-bold">{currentFullDate}</div>
-            <button
-                onClick={handleClickNext}
-                className="text-white focus:outline-none"
-            >
+            <button onClick={handleClickNext} className="text-white focus:outline-none">
                 <ArrowLeft />
             </button>
         </div>

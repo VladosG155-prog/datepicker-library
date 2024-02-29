@@ -1,5 +1,3 @@
-export interface ICalendarHeaderProps {
-    handleClickPrev: () => void
-    currentFullDate: string
-    handleClickNext: () => void
-}
+import { ICalendarHeader } from '../interfaces'
+
+export interface ICalendarHeaderProps extends ICalendarHeader {}

@@ -78,6 +78,14 @@ export default [
                         find: '@utils',
                         replacement: path.resolve(projectRootDir, 'src', 'utils'),
                     },
+                    {
+                        find: '@decorators',
+                        replacement: path.resolve(projectRootDir, 'src', 'decorators'),
+                    },
+                    {
+                        find: '@hooks',
+                        replacement: path.resolve(projectRootDir, 'src', 'hooks'),
+                    },
                 ],
             }),
             terser(),

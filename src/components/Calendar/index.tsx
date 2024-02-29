@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 import { monthNames } from '@constants/month'
-import { withLogic } from '../../decorators/withLogic'
+import { withLogic } from '@decorators/withLogic'
 import { DAYS_POSITION, getDayKeys } from './config'
 import { CalendarGrid } from './CalendarGrid'
 import { ICalendarProps } from './interfaces'

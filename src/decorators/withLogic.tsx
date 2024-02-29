@@ -1,45 +1,31 @@
 import { FC, useRef } from 'react'
 import { CalendarService } from './calendarService'
-import { withHolidays } from './withHolidays'
+import { withHolidays as withHolidaysHoc } from './withHolidays'
 import { ICalendarProps } from '@components/Calendar/interfaces'
-import { withMondayFirst } from './withMondayFirst'
+import { withMondayFirst as withMondayFirstHoc } from './withMondayFirst'
 import { withViewType } from './withViewType'
-import { withRange } from './withRange'
-import { withTodos } from './withTodos'
-import { VIEW_TYPE } from '@constants/enums'
+import { withRange as withRangeHoc } from './withRange'
+import { withTodos as withTodosHoc } from './withTodos'
+import { ILogicProps } from './interfaces/ILogicInterface'
 
-export interface ILogicProps {
-    withHolidays?: boolean
-    withMondayFirst?: boolean
-    withRange?: boolean
-    withTodos?: boolean
-    maxDate?: Date | null
-    minDate?: Date | null
-    activeDate?: string
-    viewType?: VIEW_TYPE
-    onSelectDay?: (val: string) => void
+const options = {
+    withHolidays: withHolidaysHoc,
+    withMondayFirst: withMondayFirstHoc,
+    withRange: withRangeHoc,
+    withTodos: withTodosHoc,
 }
 
 export const withLogic = <P extends ICalendarProps>(Component: FC<ICalendarProps>) => {
     return (props: ILogicProps) => {
         const calendarService = new CalendarService(Component)
         const ref = useRef()
+
         calendarService.add(withViewType)
 
-        if (props.withHolidays) {
-            calendarService.add(withHolidays)
-        }
-
-        if (props.withMondayFirst) {
-            calendarService.add(withMondayFirst)
-        }
-
-        if (props.withRange) {
-            calendarService.add(withRange)
-        }
-
-        if (props.withTodos) {
-            calendarService.add(withTodos)
+        for (const [prop, hoc] of Object.entries(options)) {
+            if (props[prop as keyof ILogicProps]) {
+                calendarService.add(hoc)
+            }
         }
 
         const Calendar = calendarService.Calendar

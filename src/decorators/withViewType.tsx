@@ -1,6 +1,6 @@
 import { FC, useMemo, useState } from 'react'
-import { generateCalendarDays } from '../utils/generateDays'
-import { monthNames } from '../constants/month'
+import { generateCalendarDays } from '@utils/generateDays'
+import { monthNames } from '@constants/month'
 
 const nowDate = new Date(Date.now())
 
@@ -18,11 +18,7 @@ const stringDefaultDate = transformDateToInput(
 
 export const withViewType = (Component: FC<ICalendarProps>) => {
     return (props: ICalendarProps) => {
-        const {
-            activeDate = stringDefaultDate,
-            viewType,
-            isMondayFirst,
-        } = props
+        const { activeDate = stringDefaultDate, viewType, isMondayFirst } = props
 
         const rangeDate = activeDate.split('-')[1]
             ? activeDate.split('-')[1]
